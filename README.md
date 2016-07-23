@@ -1,6 +1,6 @@
 # SempreUFG-Integração
 
-Trabalho 5 e 6 da disciplina de Integração.
+Trabalhos 5 e 6 da disciplina de Integração.
 
 **Alunos:**
 * Hiago Koziel

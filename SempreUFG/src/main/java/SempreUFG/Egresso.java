@@ -10,20 +10,18 @@ import java.util.Map;
 
 public class Egresso {
 
-    private String idEgresso, nome;
-    private String tipoDocumento, numeroDocumento;
+    private String idEgresso, nome, tipoDocumento, numeroDocumento;
     private List<String> tipoDocLista = new ArrayList<String>();
     private List<String> numDocLista = new ArrayList<String>();
     private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
-    private static int numEgresso = 0;
-    private static int numEgressoObject, listaTotal = 0;
+    private static int numEgresso = 0, numEgressoObject, listaTotal = 0;
     private int listaObjt;
     private String dataNascimento;
 
-    public static Egresso getInstancia(int num){
+    public static Egresso getInstancia(int num) {
         return Egresso.mapa.get(num);
     }
-    
+
     public void addTipoDocLista(String tipoDoc) {
         this.tipoDocLista.add(tipoDoc);
     }
@@ -52,6 +50,38 @@ public class Egresso {
         setNumEgresso();     //Atribuindo o identificador unico
         mapa.put(Egresso.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
         listaTotal++;
+    }
+
+    public boolean validaListas() {
+        boolean testTipoDocLista = true, testNumDocLista = true;
+
+        for (int i = 0; i < tipoDocLista.size(); i++) {
+            if (this.tipoDocLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: o tipo de documento sobre o numero: " + (i + 1) + ", do Egresso no registro Req.2 esta nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testTipoDocLista = false;
+            }
+            if (this.tipoDocLista.get(i).length() > 50) {
+                ImportarEgressos.setRelatorio("Erro: o tipo de documento sobre o numero: " + (i + 1) + ", do Egresso no registro Req.2 esta com mais de 50 caracteres.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testTipoDocLista = false;
+            }
+        }
+
+        for (int i = 0; i < numDocLista.size(); i++) {
+            if (this.numDocLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: o numero do documento sobre o numero: " + (i + 1) + ", do Egresso no registro Req.2 esta nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testNumDocLista = false;
+            }
+            if (this.numDocLista.get(i).length() > 50) {
+                ImportarEgressos.setRelatorio("Erro: o numero do documento sobre o numero: " + (i + 1) + ", do Egresso no registro Req.2 esta com mais de 50 caracteres.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testNumDocLista = false;
+            }
+        }
+
+        return testTipoDocLista && testNumDocLista;
     }
 
     public boolean validaEgresso() {
@@ -101,7 +131,6 @@ public class Egresso {
                 ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
-
         return (testNome && testTipoDoc && testNumDoc && testNumNascimento);
     }
 

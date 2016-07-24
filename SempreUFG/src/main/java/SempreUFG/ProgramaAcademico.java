@@ -2,12 +2,19 @@ package SempreUFG;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ProgramaAcademico {
 
     private String idHistorico, tipo, data_incio, data_fim, descricao;
+    private List<String> idHistoricoLista = new ArrayList<String>();
+    private List<String> tipoLista = new ArrayList<String>();
+    private List<String> dataInicioLista = new ArrayList<String>();
+    private List<String> dataFimLista = new ArrayList<String>();
+    private List<String> descricaoLista = new ArrayList<String>();
 
     private enum tipoDePrograma {
         INICIACAO_CIENTIFICA, MONITORIA, EXTENSAO, INTERCAMBIO;
@@ -15,29 +22,85 @@ public class ProgramaAcademico {
 
     public ProgramaAcademico(String idHistorico, String tipo, String data_incio, String data_fim, String descricao) {
         this.idHistorico = idHistorico;
+        this.idHistoricoLista.add(idHistorico);
         this.tipo = tipo;
+        this.tipoLista.add(tipo);
         this.data_incio = data_incio;
+        this.dataInicioLista.add(data_incio);
         this.data_fim = data_fim;
+        this.dataFimLista.add(data_fim);
         this.descricao = descricao;
+        this.descricaoLista.add(descricao);
     }
 
     public boolean validaProgramaAcademico() {
-        boolean testDescricao, testInicio, testFim;
+        boolean testId = true, testTipo = true, testInicio = true, testFim = true, testDescricao = true;
 
-        testInicio = (this.data_incio != null) && (this.data_incio.length() == 10);
-        testFim = (this.data_fim != null) && (this.data_fim.length() == 10);
-
-        testDescricao = (this.descricao != null) && (this.descricao.length() <= 100);
-
-        if (!testDescricao) {
-            ImportarEgressos.setTemInconsistencia(true);
-            if (this.descricao == null) {
-                ImportarEgressos.setRelatorio("Erro: a descricao do programa academico no registro Req.2 esta nulo.");
-            } else if (this.descricao.length() > 100) {
-                ImportarEgressos.setRelatorio("Erro: a descricao do programa academico no registro Req.2 esta com mais de 100 caracteres.");
+        for (int i = 0; i < idHistoricoLista.size(); i++) {
+            if (this.idHistoricoLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: o id do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 esta nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testId = false;
+            }
+            if (this.idHistoricoLista.get(i).length() > 600) {
+                ImportarEgressos.setRelatorio("Erro: o id do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 esta com mais de 600 caracteres.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testId = false;
             }
         }
-        return (testDescricao && testInicio && testFim);
+
+        for (int i = 0; i < tipoLista.size(); i++) {
+            if ((!"INICIACAO_CIENTIFICA".equals(this.tipoLista.get(i))) || (!"MONITORIA".equals(this.tipoLista.get(i)))
+                    || (!"EXTENSAO".equals(this.tipoLista.get(i))) || (!"INTERCAMBIO".equals(this.tipoLista.get(i)))) {
+                ImportarEgressos.setRelatorio("Erro: o tipo de programa sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 se difere do esperado.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testTipo = false;
+            }
+            if (this.tipoLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: o tipo de programa sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 se encontra nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testTipo = false;
+            }
+        }
+
+        for (int i = 0; i < dataInicioLista.size(); i++) {
+            if (this.dataInicioLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: a data de inicio do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 esta nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testInicio = false;
+            }
+            if (this.dataInicioLista.get(i).length() != 10) {
+                ImportarEgressos.setRelatorio("Erro: a data de inicio do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 nao possui 10 caracteres.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testInicio = false;
+            }
+
+            if (this.dataFimLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: a data de fim do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 esta nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testFim = false;
+            }
+            if (this.dataFimLista.get(i).length() != 10) {
+                ImportarEgressos.setRelatorio("Erro: a data de fim do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 nao possui 10 caracteres.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testFim = false;
+            }
+        }
+
+        for (int i = 0; i < descricaoLista.size(); i++) {
+            if (this.descricaoLista.get(i) == null) {
+                ImportarEgressos.setRelatorio("Erro: a descricao do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 esta nulo.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testDescricao = false;
+            }
+            if (this.descricaoLista.get(i).length() > 100) {
+                ImportarEgressos.setRelatorio("Erro: a descricao do historico sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 esta com mais de 100 caracteres.");
+                ImportarEgressos.setTemInconsistencia(true);
+                testDescricao = false;
+            }
+        }
+
+        return (testId && testTipo && testInicio && testFim && testDescricao);
     }
 
     private boolean testDataInicio() throws ParseException {
@@ -110,5 +173,4 @@ public class ProgramaAcademico {
     public String getTipo() {
         return tipo;
     }
-
 }

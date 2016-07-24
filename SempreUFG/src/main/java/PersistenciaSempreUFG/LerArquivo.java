@@ -2,6 +2,7 @@ package PersistenciaSempreUFG;
 
 import SempreUFG.Egresso;
 import SempreUFG.ImportarEgressos;
+import SempreUFG.ProgramaAcademico;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,6 +51,7 @@ public class LerArquivo {
             int controlReg2 = 1; //Verifica qual campo do Egresso será salvo
             String aux; // Converte o char[i] em uma String para ser analisada no if
             Egresso egresso;
+            ProgramaAcademico progAcad;
 
             //O while le todo o arquivo, linha por linha
             while (linha != null) {
@@ -239,10 +241,17 @@ public class LerArquivo {
                         }
                     }
 
+                    //Realizando a persistencia dos atributos e verificacao de inconsistencias (chamando os metodos responsaveis).
+                    //Cases 1 e 2:
                     egresso = Egresso.getInstancia(0);
                     egresso.addTipoDocLista(tipoDocEgresso);
                     egresso.addNumDocLista(numDocEgresso);
-//                    identificadorCurso
+                    egresso.validaListas();
+
+                    //Case 3:
+                    //Case 4:
+                    progAcad = new ProgramaAcademico(idHistorico, tipoEnum, dataInicio, dataFim, descricao);
+                    boolean ok = progAcad.validaProgramaAcademico();
 
                 } else {
                     ImportarEgressos.setTemInconsistencia(true);

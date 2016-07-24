@@ -1,9 +1,9 @@
 package SempreUFG;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.util.Formatter;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -11,30 +11,41 @@ import java.util.Scanner;
  */
 public class GravarRelatoImportacao {
 
-    private Formatter gravador;
+    private static BufferedWriter out;
+    private static boolean firstComment = true;
 
-    public void criarArquivo(int num) {
+    public static void criarArquivo() throws IOException {
         try {
 
-            gravador = new Formatter("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt");
-//            gravador = new Formatter("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt");
+            out = new BufferedWriter(new FileWriter("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Relato de Importacao.txt"));
+//            out = new BufferedWriter(new FileWriter("C:\\Users\\Juliano\\IntegrAplic\\Relato de Importacao.txt"));
 
         } catch (FileNotFoundException w) {
             System.err.println("Erro ao criar o Relato de Importacao.txt!");
         }
     }
 
-    public void addLembrete(String descricao) {
-        try {
-            gravador.format(descricao);
-        } catch (NoSuchElementException e) {
-            System.out.println("Erro ao gerar o arquivo .txt");
+    public static void addLembrete(String descricao) {
+
+        if (firstComment) {
+            try {
+                out.write(descricao);
+                firstComment = false;
+            } catch (IOException e) {
+            }
+        } else {
+            try {
+
+                out.newLine();
+                out.write(descricao);
+            } catch (IOException e) {
+            }
         }
     }
 
-    public void fecharArquivo() {
-        if (gravador != null) {
-            gravador.close();
+    public static void fecharArquivo() throws IOException {
+        if (out != null) {
+            out.close();
         }
     }
 }

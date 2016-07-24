@@ -31,12 +31,10 @@ class Egresso {
                 break;
             }
         }
-        return resultado ;
+        return resultado;
     }
-    
-    
+
     //---------- GETs e SEts ----------
-    
     public String getIdEgresso() {
         return idEgresso;
     }
@@ -64,6 +62,4 @@ class Egresso {
     public void setNumeroDocumento(String numeroDocumento) {
         this.numeroDocumento = numeroDocumento;
     }
-    
 }
-

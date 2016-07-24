@@ -33,10 +33,10 @@ public class ProgramaAcademico {
         int ano, mes, dia;
         boolean testeAnoInicio, testeMesInicio, testeDiaInicio;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date data_inicio = sdf.parse(this.data_incio);
+        Date dataInicio = sdf.parse(this.data_incio);
 
         Calendar cal = Calendar.getInstance();
-        cal.setTime(data_inicio);
+        cal.setTime(dataInicio);
         ano = cal.get(Calendar.YEAR);
         mes = cal.get(Calendar.MONTH);
         dia = cal.get(Calendar.DAY_OF_MONTH);
@@ -52,10 +52,10 @@ public class ProgramaAcademico {
         int ano, mes, dia;
         boolean testeAnoFim, testeMesFim, testeDiaFim;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date data_fim = sdf.parse(this.data_fim);
+        Date dataFim = sdf.parse(this.data_fim);
 
         Calendar cal = Calendar.getInstance();
-        cal.setTime(data_fim);
+        cal.setTime(dataFim);
         ano = cal.get(Calendar.YEAR);
         mes = cal.get(Calendar.MONTH);
         dia = cal.get(Calendar.DAY_OF_MONTH);

@@ -21,14 +21,22 @@ public class ProgramaAcademico {
         this.descricao = descricao;
     }
 
-
     public boolean validaProgramaAcademico() {
         boolean testDescricao, testInicio, testFim;
 
-        testDescricao = (this.descricao != null) && (this.descricao.length() <= 100);
         testInicio = (this.data_incio != null) && (this.data_incio.length() == 10);
         testFim = (this.data_fim != null) && (this.data_fim.length() == 10);
 
+        testDescricao = (this.descricao != null) && (this.descricao.length() <= 100);
+
+        if (!testDescricao) {
+            ImportarEgressos.setTemInconsistencia(true);
+            if (this.descricao == null) {
+                ImportarEgressos.setRelatorio("Erro: a descricao do programa academico no registro Req.2 esta nulo.");
+            } else if (this.descricao.length() > 100) {
+                ImportarEgressos.setRelatorio("Erro: a descricao do programa academico no registro Req.2 esta com mais de 100 caracteres.");
+            }
+        }
         return (testDescricao && testInicio && testFim);
     }
 
@@ -102,5 +110,5 @@ public class ProgramaAcademico {
     public String getTipo() {
         return tipo;
     }
-    
+
 }

@@ -8,11 +8,17 @@ import java.util.Map;
 
 public class Egresso {
 
-    private String idEgresso, nome, tipoDocumento, numeroDocumento;
+    private String idEgresso, nome;
+    private String[] tipoDocumento, numeroDocumento;
     private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
     private static int numEgresso = 0;
-    private int numEgressoObject;
+    private static int numEgressoObject, listaTotal = 0;
+    private int listaObjt;
     private String dataNascimento;
+
+    public int getNumDocAux() {
+        return listaObjt;
+    }
 
     public Date getDataNascimento() throws ParseException {
 
@@ -36,10 +42,12 @@ public class Egresso {
 
     public Egresso(String nome, String tipoDocumento, String numeroDocumento, String dataNascimento) {
         this.nome = nome;
-        this.tipoDocumento = tipoDocumento;
-        this.numeroDocumento = numeroDocumento;
+//        this.tipoDocumento[listaTotal] = tipoDocumento;
+//        this.numeroDocumento[listaTotal] = numeroDocumento;
         this.dataNascimento = dataNascimento;
-        this.idEgresso = this.tipoDocumento + this.numeroDocumento;
+//        this.idEgresso = this.tipoDocumento[listaTotal] + this.numeroDocumento[listaTotal];
+        listaObjt = listaTotal;
+        listaTotal++;
         setNumEgresso();     //Atribuindo o identificador unico
         mapa.put(this.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
     }
@@ -63,7 +71,7 @@ public class Egresso {
             }
         }
 
-        testTipoDoc = (this.tipoDocumento != null) && (this.tipoDocumento.length() <= 50);
+        testTipoDoc = (this.tipoDocumento != null) && (this.tipoDocumento[listaObjt].length() <= 50);
 
         if (!testTipoDoc) {
             ImportarEgressos.setTemInconsistencia(true);
@@ -74,7 +82,7 @@ public class Egresso {
             }
         }
 
-        testNumDoc = (this.numeroDocumento != null) && (this.numeroDocumento.length() <= 50) && testNumeroDoc();
+        testNumDoc = (this.numeroDocumento != null) && (this.numeroDocumento[listaObjt].length() <= 50) && testNumeroDoc();
 
         if (!testNumDoc) {
             ImportarEgressos.setTemInconsistencia(true);
@@ -101,7 +109,7 @@ public class Egresso {
     }
 
     private boolean testNumeroDoc() {
-        char[] numDoc = this.numeroDocumento.toCharArray();
+        char[] numDoc = this.numeroDocumento[listaObjt].toCharArray();
         boolean resultado = true;
 
         for (int i = 0; i < numDoc.length; i++) // verifica se o char não é um dígito
@@ -144,10 +152,10 @@ public class Egresso {
     }
 
     public String getTipoDocumento() {
-        return tipoDocumento;
+        return tipoDocumento[listaObjt];
     }
 
     public String getNumeroDocumento() {
-        return numeroDocumento;
+        return numeroDocumento[listaObjt];
     }
 }

@@ -32,8 +32,7 @@ public class ImportarEgressos {
         LerArquivo.lerDados();
         if (ImportarEgressos.temInconsistencia) {
             GravarRelatoImportacao.addRelato("Foram constatadas inconsistencias. Devido a estas inconsistencias, o Bando de Dados nao sera alterado.");
-            GravarRelatoImportacao.addRelato("O relatorio das inconsistencias encontradas podem ser encontradas acima.");
-        }else{
+        } else {
             GravarRelatoImportacao.addRelato("Nao foram encontradas inconsistencias. As alteracoes serao salvas no Banco de Dados.");
         }
         GravarRelatoImportacao.fecharArquivo();

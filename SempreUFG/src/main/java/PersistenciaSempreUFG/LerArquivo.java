@@ -1,5 +1,6 @@
 package PersistenciaSempreUFG;
 
+import SempreUFG.Egresso;
 import SempreUFG.ImportarEgressos;
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,7 +39,10 @@ public class LerArquivo {
             String linha = lerArq.readLine();
 
             char[] numDoc = linha.toCharArray();
+            System.out.println(numDoc);
             String ident = "";
+            int controlReg1 = 1; //Verifica qual campo do Egresso será salvo
+            String aux; // Converte o char[i] em uma String para ser analisada no if
 
             while (linha != null) {
                 ident = "";
@@ -53,6 +57,46 @@ public class LerArquivo {
                 //e todos os campos de Histórico na UFG. 
                 if (ident.equals("Reg.1")) {
                     System.out.println("Identificador da linha: " + ident);
+                    Egresso egresso;
+                    String nome = "", tipoDocumento = "", numeroDocumento = "", dataNascimento = "";
+
+                    for (int i = 5; i < numDoc.length; i++) {
+                        aux = String.valueOf(numDoc[i]);
+                        switch (controlReg1) {
+                            case 1:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    nome = nome + aux;
+                                }
+                                break;
+                            case 2:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    tipoDocumento = tipoDocumento + aux;
+                                }
+                                break;
+                            case 3:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    numeroDocumento = numeroDocumento + aux;
+                                }
+                                break;
+                            case 4:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    dataNascimento = dataNascimento + aux;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    egresso = new Egresso(nome, tipoDocumento, numeroDocumento, dataNascimento);
 
                     //Registro tipo 2: Valor fixo “Reg.2”, o segundo e terceiro 
                     //campos do Egresso, o identificador de um Curso da UFG 

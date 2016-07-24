@@ -5,10 +5,18 @@ import java.util.Map;
 
 public class Egresso {
 
-    private String idEgresso, nome, tipoDocumento, numeroDocumento;
+    private String idEgresso, nome, tipoDocumento, numeroDocumento, dataNascimento;
     private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
     private static int numEgresso = 0;
     private int numEgressoObject;
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public static int getNumEgresso() {
+        return numEgresso;
+    }
 
     private void setNumEgresso() {
         Egresso.numEgresso = Egresso.numEgresso + 1;
@@ -23,10 +31,11 @@ public class Egresso {
         return Egresso.mapa.size();
     }
 
-    public Egresso(String nome, String tipoDocumento, String documentoId) {
+    public Egresso(String nome, String tipoDocumento, String documentoId, String dataNascimento) {
         this.nome = nome;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = documentoId;
+        this.dataNascimento = dataNascimento;
         this.idEgresso = this.tipoDocumento + this.numeroDocumento;
         setNumEgresso();     //Atribuindo o identificador unico
         mapa.put(this.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;

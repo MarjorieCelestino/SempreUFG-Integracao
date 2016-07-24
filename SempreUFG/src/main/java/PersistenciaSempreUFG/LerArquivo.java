@@ -115,7 +115,6 @@ public class LerArquivo {
 //                    } else {
 //                        System.out.println("Opps...");
 //                    }
-
                     //Registro tipo 2: Valor fixo “Reg.2”, o segundo e terceiro 
                     //campos do Egresso, o identificador de um Curso da UFG 
                     //cursado pelo egresso, e todos os campos de Realização de 

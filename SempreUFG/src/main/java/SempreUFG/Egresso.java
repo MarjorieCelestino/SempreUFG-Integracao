@@ -68,7 +68,7 @@ public class Egresso {
         }
 
         testNumDoc = (this.numeroDocumento != null) && (this.numeroDocumento.length() <= 50) && testNumeroDoc();
-        
+
         if (!testNumDoc) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.numeroDocumento == null) {
@@ -77,8 +77,17 @@ public class Egresso {
                 GravarRelatoImportacao.addRelato("Erro: o numero do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
-        
+
         testNumNascimento = (this.dataNascimento != null) && (this.dataNascimento.length() <= 50) && testNumeroNascimento();
+
+        if (!testNumNascimento) {
+            ImportarEgressos.setTemInconsistencia(true);
+            if (this.numeroDocumento == null) {
+                GravarRelatoImportacao.addRelato("Erro: a data de nascimento do Egresso no registro Req.1 esta nulo.");
+            } else if (this.nome.length() > 50) {
+                GravarRelatoImportacao.addRelato("Erro: a data de nascimento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+            }
+        }
 
         return (testNome && testTipoDoc && testNumDoc && testNumNascimento);
     }
@@ -89,7 +98,9 @@ public class Egresso {
         for (int i = 0; i < numDoc.length; i++) // verifica se o char não é um dígito
         {
             if (!Character.isDigit(numDoc[i])) {
+                ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
+                GravarRelatoImportacao.addRelato("Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.");
                 break;
             }
         }
@@ -104,6 +115,9 @@ public class Egresso {
         {
             aux = String.valueOf(numDoc[i]);
             if ((!Character.isDigit(numDoc[i])) && (!aux.equals("-"))) {
+                ImportarEgressos.setTemInconsistencia(true);
+                resultado = false;
+                GravarRelatoImportacao.addRelato("Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '-'.");
                 resultado = false;
                 break;
             }

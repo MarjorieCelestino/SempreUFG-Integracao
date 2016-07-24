@@ -10,12 +10,13 @@ public class HistoricoNaUFG {
     private String idEgresso, cursoUFG;
     private int mesAnoInicio, mesAnoFim, numeroMatriculaCurso;
     private String tituloTrabalhoFinal;
+    private Egresso egresso;
 
-    public HistoricoNaUFG(int idHistorico, String idEgresso, String cursoUFG,
+    public HistoricoNaUFG(int idHistorico, String cursoUFG,
             int mesAnoInicio, int mesAnoFim, int numeroMatriculaCurso, String tituloTrabalhoFinal) {
 
         this.idHistorico = idHistorico;
-        this.idEgresso = idEgresso;
+        this.idEgresso = egresso.getIdEgresso();
         this.cursoUFG = cursoUFG;
         this.mesAnoInicio = mesAnoInicio;
         this.mesAnoFim = mesAnoFim;

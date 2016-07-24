@@ -1,14 +1,35 @@
 package SempreUFG;
 
-class Egresso {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Egresso {
 
     private String idEgresso, nome, tipoDocumento, numeroDocumento;
+    private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
+    private static int numEgresso = 0;
+    private int numEgressoObject;
+
+    private void setNumEgresso() {
+        Egresso.numEgresso = Egresso.numEgresso + 1;
+        this.numEgressoObject = Egresso.numEgresso;
+    }
+
+    public int getNumEgressoObject() {
+        return numEgressoObject;
+    }
+
+    public int getNumLista() {
+        return Egresso.mapa.size();
+    }
 
     public Egresso(String nome, String tipoDocumento, String documentoId) {
         this.nome = nome;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = documentoId;
         this.idEgresso = this.tipoDocumento + this.numeroDocumento;
+        setNumEgresso();     //Atribuindo o identificador unico
+        mapa.put(this.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
     }
 
     public boolean validaEgresso() {

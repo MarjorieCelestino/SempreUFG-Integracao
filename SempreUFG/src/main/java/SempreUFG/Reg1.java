@@ -1,6 +1,7 @@
 package SempreUFG;
 
 public class Reg1 {
+
     private Egresso egresso;
     private String curso;
     private HistoricoNaUFG historico;

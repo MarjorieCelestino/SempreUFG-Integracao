@@ -49,9 +49,12 @@ public class LerArquivo {
             int controlReg1 = 1; //Verifica qual campo do Egresso será salvo
             int controlReg2 = 1; //Verifica qual campo do Egresso será salvo
             String aux; // Converte o char[i] em uma String para ser analisada no if
+            Egresso egresso;
 
             //O while le todo o arquivo, linha por linha
             while (linha != null) {
+                controlReg1 = 1;
+                controlReg2 = 1;
                 ident = "";
                 numDoc = linha.toCharArray();
                 System.out.printf("Conteudo da linha: " + "%s\n", linha);
@@ -79,7 +82,6 @@ public class LerArquivo {
                     }
 
                     System.out.println("Identificador da linha: " + ident);
-                    Egresso egresso;
                     String nome = "", tipoDocumento = "", numeroDocumento = "", dataNascimento = "";
                     boolean passou = false;
 
@@ -168,7 +170,7 @@ public class LerArquivo {
                             }
                         }
 
-                        //switch para os campos do registro Req.1
+                        //switch para os campos do registro Req.2
                         switch (controlReg2) {
                             case 1:
                                 if (aux.equals("\\")) {
@@ -188,7 +190,7 @@ public class LerArquivo {
                                 if (aux.equals("\\")) {
                                     controlReg2 = controlReg2 + 1;
                                 } else {
-                                    
+
                                     identificadorCurso = identificadorCurso + aux;
                                 }
                                 break;
@@ -237,6 +239,11 @@ public class LerArquivo {
                         }
                     }
 
+                    egresso = Egresso.getInstancia(0);
+                    egresso.addTipoDocLista(tipoDocEgresso);
+                    egresso.addNumDocLista(numDocEgresso);
+//                    identificadorCurso
+
                 } else {
                     ImportarEgressos.setTemInconsistencia(true);
                     ImportarEgressos.setRelatorio("Erro: identificador invalido. Identificador encontrado: " + ident + ".");
@@ -257,6 +264,18 @@ public class LerArquivo {
                     ImportarEgressos.setRelatorio("Erro: esta faltando um campo no registro do tipo Req.1.");
                 } else {
                     ImportarEgressos.setRelatorio("Erro: estao faltando 2 ou mais campos no registro do tipo Req.1.");
+                }
+                System.out.println(result);
+                ImportarEgressos.setTemInconsistencia(true);
+            }
+
+            if (controlReg2 < 8) {
+                int result = 8 - controlReg1;
+
+                if (result == 1) {
+                    ImportarEgressos.setRelatorio("Erro: esta faltando um campo no registro do tipo Req.2.");
+                } else {
+                    ImportarEgressos.setRelatorio("Erro: estao faltando 2 ou mais campos no registro do tipo Req.2.");
                 }
                 System.out.println(result);
                 ImportarEgressos.setTemInconsistencia(true);

@@ -3,58 +3,55 @@ package SempreUFG;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Egresso {
 
     private String idEgresso, nome;
-    private String[] tipoDocumento, numeroDocumento;
+    private String tipoDocumento, numeroDocumento;
+    private List<String> tipoDocLista = new ArrayList<String>();
+    private List<String> numDocLista = new ArrayList<String>();
     private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
     private static int numEgresso = 0;
     private static int numEgressoObject, listaTotal = 0;
     private int listaObjt;
     private String dataNascimento;
 
-    public int getNumDocAux() {
-        return listaObjt;
+    public static Egresso getInstancia(int num){
+        return Egresso.mapa.get(num);
+    }
+    
+    public void addTipoDocLista(String tipoDoc) {
+        this.tipoDocLista.add(tipoDoc);
     }
 
-    public Date getDataNascimento() throws ParseException {
-
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        java.sql.Date data = new java.sql.Date(format.parse(dataNascimento).getTime());
-
-        return data;
+    public void addNumDocLista(String numeroDoc) {
+        this.numDocLista.add(numeroDoc);
     }
 
-    public static int getNumEgresso() {
-        return numEgresso;
+    public int getTipoDocListaSize() {
+        return tipoDocLista.size();
     }
 
-    public int getNumEgressoObject() {
-        return numEgressoObject;
-    }
-
-    public int getNumLista() {
-        return Egresso.mapa.size();
+    public int getNumDocListaSize() {
+        return numDocLista.size();
     }
 
     public Egresso(String nome, String tipoDocumento, String numeroDocumento, String dataNascimento) {
         this.nome = nome;
-//        this.tipoDocumento[listaTotal] = tipoDocumento;
-//        this.numeroDocumento[listaTotal] = numeroDocumento;
+        this.tipoDocLista.add(tipoDocumento);
+        this.tipoDocumento = tipoDocumento;
+        this.numDocLista.add(numeroDocumento);
+        this.numeroDocumento = numeroDocumento;
         this.dataNascimento = dataNascimento;
-//        this.idEgresso = this.tipoDocumento[listaTotal] + this.numeroDocumento[listaTotal];
-        listaObjt = listaTotal;
-        listaTotal++;
-        setNumEgresso();     //Atribuindo o identificador unico
-        mapa.put(this.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
-    }
 
-    private void setNumEgresso() {
-        Egresso.numEgresso = Egresso.numEgresso + 1;
-        this.numEgressoObject = Egresso.numEgresso;
+        listaObjt = listaTotal;
+        setNumEgresso();     //Atribuindo o identificador unico
+        mapa.put(Egresso.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
+        listaTotal++;
     }
 
     public boolean validaEgresso() {
@@ -71,7 +68,7 @@ public class Egresso {
             }
         }
 
-        testTipoDoc = (this.tipoDocumento != null) && (this.tipoDocumento[listaObjt].length() <= 50);
+        testTipoDoc = (this.tipoDocumento != null) && (this.tipoDocumento.length() <= 50);
 
         if (!testTipoDoc) {
             ImportarEgressos.setTemInconsistencia(true);
@@ -82,7 +79,7 @@ public class Egresso {
             }
         }
 
-        testNumDoc = (this.numeroDocumento != null) && (this.numeroDocumento[listaObjt].length() <= 50) && testNumeroDoc();
+        testNumDoc = (this.numeroDocumento != null) && (this.numeroDocumento.length() <= 50) && testNumeroDoc();
 
         if (!testNumDoc) {
             ImportarEgressos.setTemInconsistencia(true);
@@ -108,8 +105,37 @@ public class Egresso {
         return (testNome && testTipoDoc && testNumDoc && testNumNascimento);
     }
 
+    public int getNumDocAux() {
+        return listaObjt;
+    }
+
+    public Date getDataNascimento() throws ParseException {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date data = new java.sql.Date(format.parse(dataNascimento).getTime());
+
+        return data;
+    }
+
+    public static int getNumEgresso() {
+        return numEgresso;
+    }
+
+    public int getNumEgressoObject() {
+        return numEgressoObject;
+    }
+
+    public int getNumLista() {
+        return Egresso.mapa.size();
+    }
+
+    private void setNumEgresso() {
+        this.numEgressoObject = Egresso.numEgresso;
+        Egresso.numEgresso = Egresso.numEgresso + 1;
+    }
+
     private boolean testNumeroDoc() {
-        char[] numDoc = this.numeroDocumento[listaObjt].toCharArray();
+        char[] numDoc = this.numeroDocumento.toCharArray();
         boolean resultado = true;
 
         for (int i = 0; i < numDoc.length; i++) // verifica se o char não é um dígito
@@ -152,10 +178,10 @@ public class Egresso {
     }
 
     public String getTipoDocumento() {
-        return tipoDocumento[listaObjt];
+        return tipoDocumento;
     }
 
     public String getNumeroDocumento() {
-        return numeroDocumento[listaObjt];
+        return numeroDocumento;
     }
 }

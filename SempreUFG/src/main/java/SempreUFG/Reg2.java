@@ -1,6 +1,7 @@
 package SempreUFG;
 
 public class Reg2 {
+
     private String idEgresso, curso;
     private ProgramaAcademico progAcad;
 
@@ -21,5 +22,4 @@ public class Reg2 {
     public ProgramaAcademico getProgAcad() {
         return progAcad;
     }
-    
 }

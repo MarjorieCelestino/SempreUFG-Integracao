@@ -7,17 +7,20 @@ import java.util.Date;
 
 public class ProgramaAcademico {
 
-    private String data_incio, data_fim, descricao;
+    private String idHistorico, tipo, data_incio, data_fim, descricao;
 
     private enum tipoDePrograma {
         INICIACAO_CIENTIFICA, MONITORIA, EXTENSAO, INTERCAMBIO;
     }
 
-    public ProgramaAcademico(String data_incio, String data_fim, String descricao) {
+    public ProgramaAcademico(String idHistorico, String tipo, String data_incio, String data_fim, String descricao) {
+        this.idHistorico = idHistorico;
+        this.tipo = tipo;
         this.data_incio = data_incio;
         this.data_fim = data_fim;
         this.descricao = descricao;
     }
+
 
     public boolean validaProgramaAcademico() {
         boolean testDescricao, testInicio, testFim;
@@ -92,4 +95,12 @@ public class ProgramaAcademico {
         this.descricao = descricao;
     }
 
+    public String getIdHistorico() {
+        return idHistorico;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+    
 }

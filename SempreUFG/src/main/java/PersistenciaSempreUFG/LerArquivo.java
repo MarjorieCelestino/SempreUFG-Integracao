@@ -16,19 +16,20 @@ import java.util.Scanner;
 public class LerArquivo {
 
     private static Scanner leitor;
+    private static int quantEgresso = 0;
 
-    public static void abrirArquivo() {
+    public static void abrirArquivo() throws IOException {
         try {
             leitor = new Scanner(new File("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt"));
 //            leitor = new Scanner(new File("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
+            GravarRelatoImportacao.criarArquivo();
             System.out.println("Arquivo Aberto com sucesso!");
         } catch (FileNotFoundException file) {
             System.out.println("Erro ao abrir o arquivo!");
         }
     }
 
-    public static void lerDados() {
-
+    public static void lerDados() throws IOException {
         System.out.printf("\nConteudo do arquivo texto:\n\n");
         try {
             FileReader arq = new FileReader("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt");
@@ -56,6 +57,13 @@ public class LerArquivo {
                 //campos de Egresso, o nome do Curso da UFG cursado pelo egresso, 
                 //e todos os campos de Histórico na UFG. 
                 if (ident.equals("Reg.1")) {
+                    quantEgresso = quantEgresso + 1;
+
+                    if (quantEgresso > 1) {
+                        GravarRelatoImportacao.addRelato("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
+                        ImportarEgressos.setTemInconsistencia(true);
+                    }
+
                     System.out.println("Identificador da linha: " + ident);
                     Egresso egresso;
                     String nome = "", tipoDocumento = "", numeroDocumento = "", dataNascimento = "";
@@ -92,11 +100,21 @@ public class LerArquivo {
                                 }
                                 break;
                             default:
+                                GravarRelatoImportacao.addRelato("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
+                                ImportarEgressos.setTemInconsistencia(true);
                                 break;
                         }
                     }
 
                     egresso = new Egresso(nome, tipoDocumento, numeroDocumento, dataNascimento);
+
+//                    boolean ok = egresso.validaEgresso();
+//
+//                    if (ok) {
+//                        System.out.println("Não foram encontradas inconsist");
+//                    } else {
+//                        System.out.println("Opps...");
+//                    }
 
                     //Registro tipo 2: Valor fixo “Reg.2”, o segundo e terceiro 
                     //campos do Egresso, o identificador de um Curso da UFG 
@@ -119,9 +137,10 @@ public class LerArquivo {
         }
     }
 
-    public static void fecharArquivo() {
+    public static void fecharArquivo() throws IOException {
         if (leitor != null) {
             leitor.close();
+            GravarRelatoImportacao.fecharArquivo();
         }
     }
 }

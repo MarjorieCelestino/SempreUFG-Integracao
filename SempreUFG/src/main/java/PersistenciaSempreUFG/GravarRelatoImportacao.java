@@ -25,19 +25,18 @@ public class GravarRelatoImportacao {
         }
     }
 
-    public static void addLembrete(String descricao) {
+    public static void addRelato(String relato) {
 
         if (firstComment) {
             try {
-                out.write(descricao);
+                out.write(relato);
                 firstComment = false;
             } catch (IOException e) {
             }
         } else {
             try {
-
                 out.newLine();
-                out.write(descricao);
+                out.write(relato);
             } catch (IOException e) {
             }
         }

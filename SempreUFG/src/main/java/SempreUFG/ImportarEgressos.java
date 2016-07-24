@@ -27,10 +27,10 @@ public class ImportarEgressos {
         LerArquivo.fecharArquivo();
 
         GravarRelatoImportacao.criarArquivo();
-        GravarRelatoImportacao.addLembrete("Teste 01");
-        GravarRelatoImportacao.addLembrete("Teste 02");
-        GravarRelatoImportacao.addLembrete("Teste 03");
-        GravarRelatoImportacao.addLembrete("Teste 04");
+        GravarRelatoImportacao.addRelato("Teste 01");
+        GravarRelatoImportacao.addRelato("Teste 02");
+        GravarRelatoImportacao.addRelato("Teste 03");
+        GravarRelatoImportacao.addRelato("Teste 04");
         GravarRelatoImportacao.fecharArquivo();
 
     }

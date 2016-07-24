@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package SempreUFG;
 
 import java.io.BufferedReader;
@@ -19,13 +14,11 @@ import java.util.Scanner;
 public class LerArquivo {
 
     private static Scanner leitor;
-    static String nome;
 
-    public static void abrirArquivo(String nome) {
-        LerArquivo.nome = nome;
+    public static void abrirArquivo() {
         try {
-            leitor = new Scanner(new File("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\" + nome + ".txt"));
-//            leitor = new Scanner(new File("C:\\Users\\Juliano\\IntegrAplic\\" + nome + ".txt"));
+            leitor = new Scanner(new File("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt"));
+//            leitor = new Scanner(new File("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
             System.out.println("Arquivo Aberto com sucesso!");
         } catch (FileNotFoundException file) {
             System.out.println("Erro ao abrir o arquivo!");
@@ -34,22 +27,36 @@ public class LerArquivo {
 
     public static void lerDados() {
 
-        System.out.printf("\nConteúdo do arquivo texto:\n");
+        System.out.printf("\nConteudo do arquivo texto:\n\n");
         try {
-            FileReader arq = new FileReader("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\" + nome + ".txt");
-//            FileReader arq = new FileReader("C:\\Users\\Juliano\\IntegrAplic\\" + nome + ".txt"));
+            FileReader arq = new FileReader("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt");
+//            FileReader arq = new FileReader("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
 
             BufferedReader lerArq = new BufferedReader(arq);
 
             String linha = lerArq.readLine();
 
+            char[] numDoc = linha.toCharArray();
+            String ident = "";
+
             while (linha != null) {
-                System.out.printf("%s\n", linha);
+                ident = "";
+                numDoc = linha.toCharArray();
+                System.out.printf("Conteudo da linha: " + "%s\n", linha);
+                for (int i = 0; i < 5; i++) // verifica se o char não é um dígito
+                {
+                    ident = ident + numDoc[i];
+                }
+
+                if (ident.equals("Reg.1") || ident.equals("Reg.2")) {
+                    System.out.println("Identificador da linha: " + ident);
+                } else {
+                    System.out.println("Identificador invalido. Identificador encontrado: " + ident);
+                }
 
                 linha = lerArq.readLine();
             }
             arq.close();
-
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
                     e.getMessage());

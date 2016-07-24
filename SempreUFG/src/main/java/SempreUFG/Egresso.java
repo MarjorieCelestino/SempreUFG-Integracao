@@ -1,6 +1,5 @@
 package SempreUFG;
 
-import PersistenciaSempreUFG.GravarRelatoImportacao;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,9 +49,9 @@ public class Egresso {
         if (!testNome) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.nome == null) {
-                GravarRelatoImportacao.addRelato("Erro: o nome do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorioR1("Erro: o nome do Egresso no registro Req.1 esta nulo.");
             } else if (this.nome.length() > 100) {
-                GravarRelatoImportacao.addRelato("Erro: o nome do Egresso no registro Req.1 esta com mais de 100 caracteres.");
+                ImportarEgressos.setRelatorioR1("Erro: o nome do Egresso no registro Req.1 esta com mais de 100 caracteres.");
             }
         }
 
@@ -61,9 +60,9 @@ public class Egresso {
         if (!testTipoDoc) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.tipoDocumento == null) {
-                GravarRelatoImportacao.addRelato("Erro: o tipo do documento do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorioR1("Erro: o tipo do documento do Egresso no registro Req.1 esta nulo.");
             } else if (this.nome.length() > 50) {
-                GravarRelatoImportacao.addRelato("Erro: o tipo do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+                ImportarEgressos.setRelatorioR1("Erro: o tipo do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
 
@@ -72,9 +71,9 @@ public class Egresso {
         if (!testNumDoc) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.numeroDocumento == null) {
-                GravarRelatoImportacao.addRelato("Erro: o numero do documento do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorioR1("Erro: o numero do documento do Egresso no registro Req.1 esta nulo.");
             } else if (this.nome.length() > 50) {
-                GravarRelatoImportacao.addRelato("Erro: o numero do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+                ImportarEgressos.setRelatorioR1("Erro: o numero do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
 
@@ -83,9 +82,10 @@ public class Egresso {
         if (!testNumNascimento) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.numeroDocumento == null) {
-                GravarRelatoImportacao.addRelato("Erro: a data de nascimento do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorioR1("Erro: a data de nascimento do Egresso no registro Req.1 esta nulo.");
+
             } else if (this.nome.length() > 50) {
-                GravarRelatoImportacao.addRelato("Erro: a data de nascimento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+                ImportarEgressos.setRelatorioR1("Erro: a data de nascimento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
 
@@ -95,12 +95,13 @@ public class Egresso {
     private boolean testNumeroDoc() {
         char[] numDoc = this.numeroDocumento.toCharArray();
         boolean resultado = true;
+
         for (int i = 0; i < numDoc.length; i++) // verifica se o char não é um dígito
         {
             if (!Character.isDigit(numDoc[i])) {
                 ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
-                GravarRelatoImportacao.addRelato("Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.");
+                ImportarEgressos.setRelatorioR1("Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.");
                 break;
             }
         }
@@ -117,7 +118,7 @@ public class Egresso {
             if ((!Character.isDigit(numDoc[i])) && (!aux.equals("-"))) {
                 ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
-                GravarRelatoImportacao.addRelato("Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '-'.");
+                ImportarEgressos.setRelatorioR1("Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '-'.");
                 resultado = false;
                 break;
             }

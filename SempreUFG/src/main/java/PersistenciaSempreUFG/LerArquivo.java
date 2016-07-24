@@ -22,7 +22,6 @@ public class LerArquivo {
         try {
             leitor = new Scanner(new File("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt"));
 //            leitor = new Scanner(new File("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
-            GravarRelatoImportacao.criarArquivo();
             System.out.println("Arquivo Aberto com sucesso!");
         } catch (FileNotFoundException file) {
             System.out.println("Erro ao abrir o arquivo!");
@@ -60,7 +59,7 @@ public class LerArquivo {
                     quantEgresso = quantEgresso + 1;
 
                     if (quantEgresso > 1) {
-                        GravarRelatoImportacao.addRelato("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
+                        ImportarEgressos.setRelatorioR1("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
                         ImportarEgressos.setTemInconsistencia(true);
                     }
 
@@ -100,7 +99,7 @@ public class LerArquivo {
                                 }
                                 break;
                             default:
-                                GravarRelatoImportacao.addRelato("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
+                                ImportarEgressos.setRelatorioR1("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
                                 ImportarEgressos.setTemInconsistencia(true);
                                 break;
                         }
@@ -139,7 +138,6 @@ public class LerArquivo {
     public static void fecharArquivo() throws IOException {
         if (leitor != null) {
             leitor.close();
-            GravarRelatoImportacao.fecharArquivo();
         }
     }
 }

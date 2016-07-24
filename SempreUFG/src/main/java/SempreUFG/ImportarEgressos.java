@@ -10,6 +10,11 @@ import java.io.IOException;
  */
 public class ImportarEgressos {
 
+    public static void setRelatorioR1(String relatorioR1) {
+        GravarRelatoImportacao.addRelato(relatorioR1);
+        System.out.println(relatorioR1);
+    }
+
     private static boolean temInconsistencia = false;
 
     public static boolean isTemInconsistencia() {
@@ -22,16 +27,11 @@ public class ImportarEgressos {
 
     public static void main(String[] args) throws IOException {
 
-        LerArquivo.abrirArquivo();
-        LerArquivo.lerDados();
-        LerArquivo.fecharArquivo();
-
         GravarRelatoImportacao.criarArquivo();
-        GravarRelatoImportacao.addRelato("Teste 01");
-        GravarRelatoImportacao.addRelato("Teste 02");
-        GravarRelatoImportacao.addRelato("Teste 03");
-        GravarRelatoImportacao.addRelato("Teste 04");
+        LerArquivo.abrirArquivo();
+        GravarRelatoImportacao.addRelato("Relatorio de Importacao: ");
+        LerArquivo.lerDados();
         GravarRelatoImportacao.fecharArquivo();
-
+        LerArquivo.fecharArquivo();
     }
 }

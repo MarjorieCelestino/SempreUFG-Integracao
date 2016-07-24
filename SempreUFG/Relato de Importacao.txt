@@ -1,1 +1,5 @@
 Relatorio de Importacao: 
+Erro: foi constatado a inexistencia do primeiro campo do Req.1.
+Erro: Foi constatado a existencia de um campo a mais no registro Req.1.
+Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.
+Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.

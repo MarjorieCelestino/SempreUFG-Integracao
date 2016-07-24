@@ -1,6 +1,8 @@
 package SempreUFG;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,19 +12,18 @@ public class Egresso {
     private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
     private static int numEgresso = 0;
     private int numEgressoObject;
-    Date dataNascimento;
+    private String dataNascimento;
 
-    public Date getDataNascimento() {
-        return dataNascimento;
+    public Date getDataNascimento() throws ParseException {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date data = new java.sql.Date(format.parse(dataNascimento).getTime());
+
+        return data;
     }
 
     public static int getNumEgresso() {
         return numEgresso;
-    }
-
-    private void setNumEgresso() {
-        Egresso.numEgresso = Egresso.numEgresso + 1;
-        this.numEgressoObject = Egresso.numEgresso;
     }
 
     public int getNumEgressoObject() {
@@ -33,7 +34,7 @@ public class Egresso {
         return Egresso.mapa.size();
     }
 
-    public Egresso(String nome, String tipoDocumento, String numeroDocumento, Date dataNascimento) {
+    public Egresso(String nome, String tipoDocumento, String numeroDocumento, String dataNascimento) {
         this.nome = nome;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;
@@ -41,6 +42,11 @@ public class Egresso {
         this.idEgresso = this.tipoDocumento + this.numeroDocumento;
         setNumEgresso();     //Atribuindo o identificador unico
         mapa.put(this.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
+    }
+
+    private void setNumEgresso() {
+        Egresso.numEgresso = Egresso.numEgresso + 1;
+        this.numEgressoObject = Egresso.numEgresso;
     }
 
     public boolean validaEgresso() {
@@ -117,10 +123,10 @@ public class Egresso {
         for (int i = 0; i < numDoc.length; i++) // verifica se o char não é um dígito
         {
             aux = String.valueOf(numDoc[i]);
-            if ((!Character.isDigit(numDoc[i])) && (!aux.equals("-"))) {
+            if ((!Character.isDigit(numDoc[i])) && (!aux.equals("/"))) {
                 ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
-                ImportarEgressos.setRelatorioR1("Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '-'.");
+                ImportarEgressos.setRelatorioR1("Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.");
                 resultado = false;
                 break;
             }
@@ -137,23 +143,11 @@ public class Egresso {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-
     public String getNumeroDocumento() {
         return numeroDocumento;
-    }
-
-    public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
     }
 }

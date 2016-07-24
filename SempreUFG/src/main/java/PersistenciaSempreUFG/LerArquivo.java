@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Scanner;
 
 /**
@@ -66,9 +67,19 @@ public class LerArquivo {
                     System.out.println("Identificador da linha: " + ident);
                     Egresso egresso;
                     String nome = "", tipoDocumento = "", numeroDocumento = "", dataNascimento = "";
+                    boolean passou = false;
 
                     for (int i = 5; i < numDoc.length; i++) {
                         aux = String.valueOf(numDoc[i]);
+
+                        if (i == 5) {
+                            if (aux.equals("\\")) {
+                                ImportarEgressos.setRelatorioR1("Erro: foi constatado a inexistencia do primeiro campo do Req.1.");
+                                ImportarEgressos.setTemInconsistencia(true);
+                                controlReg1 = controlReg1 + 1;
+                            }
+                        }
+
                         switch (controlReg1) {
                             case 1:
                                 if (aux.equals("\\")) {
@@ -99,15 +110,18 @@ public class LerArquivo {
                                 }
                                 break;
                             default:
-                                ImportarEgressos.setRelatorioR1("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
-                                ImportarEgressos.setTemInconsistencia(true);
+                                if (!passou) {
+                                    passou = true;
+                                    ImportarEgressos.setRelatorioR1("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
+                                    ImportarEgressos.setTemInconsistencia(true);
+                                }
                                 break;
                         }
                     }
 
                     egresso = new Egresso(nome, tipoDocumento, numeroDocumento, dataNascimento);
 
-//                    boolean ok = egresso.validaEgresso();
+                    boolean ok = egresso.validaEgresso();
 //
 //                    if (ok) {
 //                        System.out.println("Não foram encontradas inconsist");

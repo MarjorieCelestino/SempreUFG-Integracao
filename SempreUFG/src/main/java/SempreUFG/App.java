@@ -1,4 +1,4 @@
-package com.sempreufg;
+package SempreUFG;
 
 /**
  * Hello world!

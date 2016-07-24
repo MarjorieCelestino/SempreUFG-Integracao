@@ -1,16 +1,18 @@
 package SempreUFG;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Egresso {
 
-    private String idEgresso, nome, tipoDocumento, numeroDocumento, dataNascimento;
+    private String idEgresso, nome, tipoDocumento, numeroDocumento;
     private static Map<Integer, Egresso> mapa = new HashMap<Integer, Egresso>();
     private static int numEgresso = 0;
     private int numEgressoObject;
+    Date dataNascimento;
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
@@ -31,7 +33,7 @@ public class Egresso {
         return Egresso.mapa.size();
     }
 
-    public Egresso(String nome, String tipoDocumento, String numeroDocumento, String dataNascimento) {
+    public Egresso(String nome, String tipoDocumento, String numeroDocumento, Date dataNascimento) {
         this.nome = nome;
         this.tipoDocumento = tipoDocumento;
         this.numeroDocumento = numeroDocumento;

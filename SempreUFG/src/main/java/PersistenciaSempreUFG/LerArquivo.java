@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.Scanner;
 
 /**
@@ -30,7 +29,6 @@ public class LerArquivo {
     }
 
     public static void lerDados() throws IOException {
-        System.out.printf("\nConteudo do arquivo texto:\n\n");
         try {
             FileReader arq = new FileReader("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt");
 //            FileReader arq = new FileReader("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
@@ -40,7 +38,6 @@ public class LerArquivo {
             String linha = lerArq.readLine();
 
             char[] numDoc = linha.toCharArray();
-            System.out.println(numDoc);
             String ident = "";
             int controlReg1 = 1; //Verifica qual campo do Egresso será salvo
             String aux; // Converte o char[i] em uma String para ser analisada no if
@@ -49,8 +46,13 @@ public class LerArquivo {
                 ident = "";
                 numDoc = linha.toCharArray();
                 System.out.printf("Conteudo da linha: " + "%s\n", linha);
-                for (int i = 0; i < 5; i++) {
-                    ident = ident + numDoc[i];
+                if (linha != null && !"".equals(linha)) {
+                    for (int i = 0; i < 5; i++) {
+                        ident = ident + numDoc[i];
+                    }
+                } else {
+                    ImportarEgressos.setRelatorio("Erro: foi constatado uma linha em branco no registro.");
+                    ImportarEgressos.setTemInconsistencia(true);
                 }
 
                 //Registro tipo 1: Valor fixo “Reg.1”, os quatro primeiros 
@@ -60,7 +62,7 @@ public class LerArquivo {
                     quantEgresso = quantEgresso + 1;
 
                     if (quantEgresso > 1) {
-                        ImportarEgressos.setRelatorioR1("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
+                        ImportarEgressos.setRelatorio("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
                         ImportarEgressos.setTemInconsistencia(true);
                     }
 
@@ -74,7 +76,7 @@ public class LerArquivo {
 
                         if (i == 5) {
                             if (aux.equals("\\")) {
-                                ImportarEgressos.setRelatorioR1("Erro: foi constatado a inexistencia do primeiro campo do Req.1.");
+                                ImportarEgressos.setRelatorio("Erro: foi constatado a inexistencia do primeiro campo do Req.1.");
                                 ImportarEgressos.setTemInconsistencia(true);
                                 controlReg1 = controlReg1 + 1;
                             }
@@ -112,7 +114,7 @@ public class LerArquivo {
                             default:
                                 if (!passou) {
                                     passou = true;
-                                    ImportarEgressos.setRelatorioR1("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
+                                    ImportarEgressos.setRelatorio("Erro: Foi constatado a existencia de um campo a mais no registro Req.1.");
                                     ImportarEgressos.setTemInconsistencia(true);
                                 }
                                 break;
@@ -138,7 +140,7 @@ public class LerArquivo {
 
                 } else {
                     ImportarEgressos.setTemInconsistencia(true);
-                    System.out.println("Identificador invalido. Identificador encontrado: " + ident);
+                    ImportarEgressos.setRelatorio("Erro: identificador invalido. Identificador encontrado: " + ident + ".");
                 }
 
                 linha = lerArq.readLine();

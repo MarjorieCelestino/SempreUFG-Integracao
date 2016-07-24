@@ -2,4 +2,10 @@ Relatorio de Importacao:
 Erro: foi constatado a inexistencia do primeiro campo do Req.1.
 Erro: Foi constatado a existencia de um campo a mais no registro Req.1.
 Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.
-Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.
+Erro: a data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.
+Erro: identificador invalido. Identificador encontrado: fafef.
+Erro: foi constatado uma linha em branco no registro do tipo Req.1.
+Erro: identificador invalido. Identificador encontrado: .
+Erro: identificador invalido. Identificador encontrado: fsefs.
+Foram constatadas inconsistencias. Devido a estas inconsistencias, o Bando de Dados nao sera alterado.
+O relatorio das inconsistencias encontradas podem ser encontradas acima.

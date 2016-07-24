@@ -19,7 +19,6 @@ public class GravarRelatoImportacao {
 
             out = new BufferedWriter(new FileWriter("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Relato de Importacao.txt"));
 //            out = new BufferedWriter(new FileWriter("C:\\Users\\Juliano\\IntegrAplic\\Relato de Importacao.txt"));
-            System.out.println("Arquivo foi gerado");
         } catch (FileNotFoundException w) {
             System.err.println("Erro ao criar o Relato de Importacao.txt!");
         }
@@ -45,7 +44,6 @@ public class GravarRelatoImportacao {
     public static void fecharArquivo() throws IOException {
         if (out != null) {
             out.close();
-            System.out.println("arquivo foi fechado");
         }
     }
 }

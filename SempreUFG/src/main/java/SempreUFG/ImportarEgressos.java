@@ -10,9 +10,8 @@ import java.io.IOException;
  */
 public class ImportarEgressos {
 
-    public static void setRelatorioR1(String relatorioR1) {
-        GravarRelatoImportacao.addRelato(relatorioR1);
-        System.out.println(relatorioR1);
+    public static void setRelatorio(String relatorio) {
+        GravarRelatoImportacao.addRelato(relatorio);
     }
 
     private static boolean temInconsistencia = false;
@@ -31,6 +30,12 @@ public class ImportarEgressos {
         LerArquivo.abrirArquivo();
         GravarRelatoImportacao.addRelato("Relatorio de Importacao: ");
         LerArquivo.lerDados();
+        if (ImportarEgressos.temInconsistencia) {
+            GravarRelatoImportacao.addRelato("Foram constatadas inconsistencias. Devido a estas inconsistencias, o Bando de Dados nao sera alterado.");
+            GravarRelatoImportacao.addRelato("O relatorio das inconsistencias encontradas podem ser encontradas acima.");
+        }else{
+            GravarRelatoImportacao.addRelato("Nao foram encontradas inconsistencias. As alteracoes serao salvas no Banco de Dados.");
+        }
         GravarRelatoImportacao.fecharArquivo();
         LerArquivo.fecharArquivo();
     }

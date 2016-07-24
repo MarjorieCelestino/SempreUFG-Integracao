@@ -57,9 +57,9 @@ public class Egresso {
         if (!testNome) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.nome == null) {
-                ImportarEgressos.setRelatorioR1("Erro: o nome do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorio("Erro: o nome do Egresso no registro Req.1 esta nulo.");
             } else if (this.nome.length() > 100) {
-                ImportarEgressos.setRelatorioR1("Erro: o nome do Egresso no registro Req.1 esta com mais de 100 caracteres.");
+                ImportarEgressos.setRelatorio("Erro: o nome do Egresso no registro Req.1 esta com mais de 100 caracteres.");
             }
         }
 
@@ -68,9 +68,9 @@ public class Egresso {
         if (!testTipoDoc) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.tipoDocumento == null) {
-                ImportarEgressos.setRelatorioR1("Erro: o tipo do documento do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorio("Erro: o tipo do documento do Egresso no registro Req.1 esta nulo.");
             } else if (this.nome.length() > 50) {
-                ImportarEgressos.setRelatorioR1("Erro: o tipo do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+                ImportarEgressos.setRelatorio("Erro: o tipo do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
 
@@ -79,9 +79,9 @@ public class Egresso {
         if (!testNumDoc) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.numeroDocumento == null) {
-                ImportarEgressos.setRelatorioR1("Erro: o numero do documento do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorio("Erro: o numero do documento do Egresso no registro Req.1 esta nulo.");
             } else if (this.nome.length() > 50) {
-                ImportarEgressos.setRelatorioR1("Erro: o numero do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+                ImportarEgressos.setRelatorio("Erro: o numero do documento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
 
@@ -90,10 +90,10 @@ public class Egresso {
         if (!testNumNascimento) {
             ImportarEgressos.setTemInconsistencia(true);
             if (this.numeroDocumento == null) {
-                ImportarEgressos.setRelatorioR1("Erro: a data de nascimento do Egresso no registro Req.1 esta nulo.");
+                ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 esta nulo.");
 
             } else if (this.nome.length() > 50) {
-                ImportarEgressos.setRelatorioR1("Erro: a data de nascimento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
+                ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 esta com mais de 50 caracteres.");
             }
         }
 
@@ -109,7 +109,7 @@ public class Egresso {
             if (!Character.isDigit(numDoc[i])) {
                 ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
-                ImportarEgressos.setRelatorioR1("Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.");
+                ImportarEgressos.setRelatorio("Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.");
                 break;
             }
         }
@@ -126,7 +126,7 @@ public class Egresso {
             if ((!Character.isDigit(numDoc[i])) && (!aux.equals("/"))) {
                 ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
-                ImportarEgressos.setRelatorioR1("Erro: oa data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.");
+                ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.");
                 resultado = false;
                 break;
             }

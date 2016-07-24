@@ -1,5 +1,6 @@
-package SempreUFG;
+package PersistenciaSempreUFG;
 
+import SempreUFG.ImportarEgressos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,23 +53,15 @@ public class LerArquivo {
                 //e todos os campos de Histórico na UFG. 
                 if (ident.equals("Reg.1")) {
                     System.out.println("Identificador da linha: " + ident);
-                    
-                    
-                    
-                    
-                    
+
                     //Registro tipo 2: Valor fixo “Reg.2”, o segundo e terceiro 
                     //campos do Egresso, o identificador de um Curso da UFG 
                     //cursado pelo egresso, e todos os campos de Realização de 
                     //Programa Acadêmico do egresso nesse curso.
                 } else if (ident.equals("Reg.2")) {
-                    
+
                     System.out.println("Identificador da linha: " + ident);
-                    
-                    
-                    
-                    
-                    
+
                 } else {
                     ImportarEgressos.setTemInconsistencia(true);
                     System.out.println("Identificador invalido. Identificador encontrado: " + ident);

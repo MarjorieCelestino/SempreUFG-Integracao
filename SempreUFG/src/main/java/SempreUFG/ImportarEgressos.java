@@ -1,7 +1,8 @@
 package SempreUFG;
 
+import PersistenciaSempreUFG.LerArquivo;
+import PersistenciaSempreUFG.GravarRelatoImportacao;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Hello world!

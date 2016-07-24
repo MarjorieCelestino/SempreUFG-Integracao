@@ -6,13 +6,12 @@ package SempreUFG;
  */
 public class HistoricoNaUFG {
 
-    private int idHistorico;
-    private String idEgresso, cursoUFG;
+    private String idHistorico, idEgresso, cursoUFG;
     private int mesAnoInicio, mesAnoFim, numeroMatriculaCurso;
     private String tituloTrabalhoFinal;
     private Egresso egresso;
 
-    public HistoricoNaUFG(int idHistorico, String cursoUFG,
+    public HistoricoNaUFG(String idHistorico, String cursoUFG,
             int mesAnoInicio, int mesAnoFim, int numeroMatriculaCurso, String tituloTrabalhoFinal) {
 
         this.idHistorico = idHistorico;
@@ -53,11 +52,11 @@ public class HistoricoNaUFG {
     }
 
     //---------- GETs e SEts ----------
-    public int getIdHistorico() {
+    public String getIdHistorico() {
         return idHistorico;
     }
 
-    public void setIdHistorico(int idHistorico) {
+    public void setIdHistorico(String idHistorico) {
         this.idHistorico = idHistorico;
     }
 

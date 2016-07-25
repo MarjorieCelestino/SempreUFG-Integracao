@@ -141,29 +141,21 @@ public class ProgramaAcademico {
         return (testeAnoFim && testeMesFim && testeDiaFim);
     }
 
-    //---------- GETs e SETs ----------
-    public String getData_incio() {
-        return data_incio;
+    //---------- GETs ----------
+    public java.sql.Date getData_incio() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date data = new java.sql.Date(format.parse(data_incio).getTime());
+        return data;
     }
 
-    public void setData_incio(String data_incio) {
-        this.data_incio = data_incio;
-    }
-
-    public String getData_fim() {
-        return data_fim;
-    }
-
-    public void setData_fim(String data_fim) {
-        this.data_fim = data_fim;
+    public java.sql.Date getData_fim() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date data = new java.sql.Date(format.parse(data_fim).getTime());
+        return data;
     }
 
     public String getDescricao() {
         return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public String getIdHistorico() {

@@ -7,6 +7,7 @@ package BancoDados;
 
 import SempreUFG.Egresso;
 import SempreUFG.HistoricoNaUFG;
+import SempreUFG.ProgramaAcademico;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -86,4 +87,35 @@ public class DataBaseDealer {
 
         return inserirHistorico;
     }
+
+    public PreparedStatement statemantFindHistorico(String idEgr, String curso) {
+
+        String sqlBuscaIdHistorico = "SELECT idHistórico FROM HISTORICO_NA_UFG WHERE idEgresso = " + idEgr + " AND cursoUFG = " + curso;
+        PreparedStatement buscaIdHistorico = null;
+        try {
+            buscaIdHistorico = conn.prepareStatement(sqlBuscaIdHistorico);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseDealer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return buscaIdHistorico;
+    }
+
+    public PreparedStatement statementProgramaAcademico(ProgramaAcademico progAcad, String id) throws ParseException {
+        String sqlInsereProgramaAcademico = "INSERT INTO REALIZACAO_DE_PROGRAMA_ACADEMICO (ID_HISTORICO, TIPO, DATA_INICIO, DATA_FIM, DESCRICAO)"
+                + "VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement InsereProgrmaAcademico = null;
+
+        try {
+            InsereProgrmaAcademico = conn.prepareStatement(sqlInsereProgramaAcademico);
+            InsereProgrmaAcademico.setString(1, id);
+            InsereProgrmaAcademico.setString(2, progAcad.getTipo());
+            InsereProgrmaAcademico.setDate(3, progAcad.getData_incio());
+            InsereProgrmaAcademico.setDate(4, progAcad.getData_fim());
+            InsereProgrmaAcademico.setString(5, progAcad.getDescricao());
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseDealer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return InsereProgrmaAcademico;
+    }
+
 }

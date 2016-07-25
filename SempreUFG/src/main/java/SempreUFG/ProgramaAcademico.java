@@ -24,7 +24,7 @@ public class ProgramaAcademico {
         testInicio = (this.data_incio != null) && (this.data_incio.length() == 10);
         testFim = (this.data_fim != null) && (this.data_fim.length() == 10);
         testHistorico = (this.idHistorico != null);
-        testTipo = (this.tipo != null) && (this.data_fim.length() <= 50);
+        testTipo = (this.tipo != null) && (this.tipo.length() <= 50);
 
         return (testDescricao && testInicio && testFim && testHistorico && testTipo);
     }

@@ -1,16 +1,2 @@
 Relatorio de Importacao: 
-Erro: o numero do documento do Egresso no registro Req.1 possui campos que nao sao numerais.
-Erro: a data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.
-Erro: Foi constatado a existencia de um campo a mais no registro Req.2.
-Erro: o tipo de programa sobre o numero: 1, do Programa Academico no registro Req.2 se difere do esperado.
-Erro: a data de inicio do historico sobre o numero: 1, do Programa Academico no registro Req.2 nao possui 10 caracteres.
-Erro: a data de fim do historico sobre o numero: 1, do Programa Academico no registro Req.2 nao possui 10 caracteres.
-Erro: o tipo de programa sobre o numero: 1, do Programa Academico no registro Req.2 se difere do esperado.
-Erro: a data de inicio do historico sobre o numero: 1, do Programa Academico no registro Req.2 nao possui 10 caracteres.
-Erro: a data de fim do historico sobre o numero: 1, do Programa Academico no registro Req.2 nao possui 10 caracteres.
-Erro: Foi constatado a existencia de um campo a mais no registro Req.2.
-Erro: o tipo de programa sobre o numero: 1, do Programa Academico no registro Req.2 se difere do esperado.
-Erro: a data de inicio do historico sobre o numero: 1, do Programa Academico no registro Req.2 nao possui 10 caracteres.
-Erro: a data de fim do historico sobre o numero: 1, do Programa Academico no registro Req.2 nao possui 10 caracteres.
-Erro: estao faltando 2 ou mais campos no registro do tipo Req.1.
-Foram constatadas inconsistencias. Devido a estas inconsistencias, o Bando de Dados nao sera alterado.
+Nao foram encontradas inconsistencias. As alteracoes serao salvas no Banco de Dados.

@@ -27,7 +27,6 @@ public class ImportarEgressos {
     public static void main(String[] args) throws IOException {
 
         GravarRelatoImportacao.criarArquivo();
-        LerArquivo.abrirArquivo();
         GravarRelatoImportacao.addRelato("Relatorio de Importacao: ");
         LerArquivo.lerDados();
         if (ImportarEgressos.temInconsistencia) {

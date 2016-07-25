@@ -3,9 +3,8 @@ package PersistenciaSempreUFG;
 import SempreUFG.Egresso;
 import SempreUFG.ImportarEgressos;
 import SempreUFG.ProgramaAcademico;
+import SempreUFG.Reg1;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,22 +14,9 @@ import java.util.Scanner;
  * @author Hiago
  */
 public class LerArquivo {
-
+    
     private static Scanner leitor;
     private static int quantEgresso = 0;
-
-    /**
-     * Classe responsavel por receber o arquivo.
-     */
-    public static void abrirArquivo() throws IOException {
-        try {
-            leitor = new Scanner(new File("C:\\Users\\Hiago\\GitHub\\SempreUFG-Integracao\\SempreUFG\\Egressos-para-Importar.txt"));
-//            leitor = new Scanner(new File("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
-            System.out.println("Arquivo Aberto com sucesso!");
-        } catch (FileNotFoundException file) {
-            System.out.println("Erro ao abrir o arquivo!");
-        }
-    }
 
     /**
      * Classe responsavel por realizar a leitura do arquivo
@@ -42,9 +28,9 @@ public class LerArquivo {
 //            FileReader arq = new FileReader("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
 
             BufferedReader lerArq = new BufferedReader(arq);
-
+            
             String linha = lerArq.readLine();
-
+            
             char[] numDoc = linha.toCharArray();
             String ident = "";
             int controlReg1 = 1; //Verifica qual campo do Egresso será salvo
@@ -52,15 +38,19 @@ public class LerArquivo {
             String aux; // Converte o char[i] em uma String para ser analisada no if
             Egresso egresso;
             ProgramaAcademico progAcad;
+            int reg1 = 0;
 
             //O while le todo o arquivo, linha por linha
             while (linha != null) {
+                if (controlReg1 > reg1) {
+                    reg1 = controlReg1;
+                }
                 controlReg1 = 1;
                 controlReg2 = 1;
                 ident = "";
                 numDoc = linha.toCharArray();
                 System.out.printf("Conteudo da linha: " + "%s\n", linha);
-
+                
                 if (linha != null && !"".equals(linha)) {
                     //variavel ident recebe o identificador da linha, podendo este ser Reg.1 ou Reg.2
                     for (int i = 0; i < 5; i++) {
@@ -77,16 +67,16 @@ public class LerArquivo {
                 //e todos os campos de Histórico na UFG. 
                 if (ident.equals("Reg.1")) {
                     quantEgresso = quantEgresso + 1;
-
+                    
                     if (quantEgresso > 1) {
                         ImportarEgressos.setRelatorio("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
                         ImportarEgressos.setTemInconsistencia(true);
                     }
-
+                    
                     System.out.println("Identificador da linha: " + ident);
                     String nome = "", tipoDocumento = "", numeroDocumento = "", dataNascimento = "";
                     boolean passou = false;
-
+                    
                     for (int i = 5; i < numDoc.length; i++) {
                         aux = String.valueOf(numDoc[i]);
 
@@ -139,26 +129,33 @@ public class LerArquivo {
                                 break;
                         }
                     }
-
+                    
                     egresso = new Egresso(nome, tipoDocumento, numeroDocumento, dataNascimento);
 
                     //Chama o metodo responsavel por validar as informacoes do egresso
-                    boolean ok = egresso.validaEgresso();
+                    boolean reg1OK = egresso.validaEgresso();
+
+                    //public Reg1(Egresso egresso, String curso, HistoricoNaUFG historico) {
+                    if (reg1OK) {
+//                        Reg1 reg1 = new Reg1(egresso,):
+                    } else {
+                        System.exit(0);
+                    }
 
                     //Registro tipo 2: Valor fixo “Reg.2”, o segundo e terceiro 
                     //campos do Egresso, o identificador de um Curso da UFG 
                     //cursado pelo egresso, e todos os campos de Realização de 
                     //Programa Acadêmico do egresso nesse curso.
                 } else if (ident.equals("Reg.2")) {
-
+                    
                     System.out.println("Identificador da linha: " + ident);
-
+                    
                     String tipoDocEgresso = "", numDocEgresso = "";
                     String identificadorCurso = "";
                     String idHistorico = "", tipoEnum = "", dataInicio = "", dataFim = "", descricao = "";
-
+                    
                     boolean passou = false;
-
+                    
                     for (int i = 5; i < numDoc.length; i++) {
                         aux = String.valueOf(numDoc[i]);
 
@@ -192,7 +189,7 @@ public class LerArquivo {
                                 if (aux.equals("\\")) {
                                     controlReg2 = controlReg2 + 1;
                                 } else {
-
+                                    
                                     identificadorCurso = identificadorCurso + aux;
                                 }
                                 break;
@@ -249,38 +246,49 @@ public class LerArquivo {
                     egresso.validaListas();
 
                     //Case 3:
-                    //Case 4:
+                    if (identificadorCurso == null) {
+                        ImportarEgressos.setRelatorio("Erro: o identificador do cursoda UfG cursado pelo egresso no registro Req.2 esta nulo.");
+                        ImportarEgressos.setTemInconsistencia(true);
+                    }
+                    if (identificadorCurso.length() > 50) {
+                        ImportarEgressos.setRelatorio("Erro: o identificador do cursoda UfG cursado pelo egresso no registro Req.2 esta com mais de 600 caracteres.");
+                        ImportarEgressos.setTemInconsistencia(true);
+                    }
+
+                    //Case 4, 5, 6, 7 e 8:
                     progAcad = new ProgramaAcademico(idHistorico, tipoEnum, dataInicio, dataFim, descricao);
                     boolean ok = progAcad.validaProgramaAcademico();
-
+                    
                 } else {
                     ImportarEgressos.setTemInconsistencia(true);
                     ImportarEgressos.setRelatorio("Erro: identificador invalido. Identificador encontrado: " + ident + ".");
                 }
-
+                
                 linha = lerArq.readLine();
             }
-
+            
             if (quantEgresso == 0) {
                 ImportarEgressos.setRelatorio("Erro: nao foi constatado nenhum registro do tipo Req.1.");
                 ImportarEgressos.setTemInconsistencia(true);
             }
-
-            if (controlReg1 < 4) {
-                int result = 4 - controlReg1;
-
+            
+            System.out.println("Controle1 " + reg1);
+            if (reg1 != 4) {
+                int result = 4 - reg1;
+                
                 if (result == 1) {
                     ImportarEgressos.setRelatorio("Erro: esta faltando um campo no registro do tipo Req.1.");
                 } else {
                     ImportarEgressos.setRelatorio("Erro: estao faltando 2 ou mais campos no registro do tipo Req.1.");
                 }
-                System.out.println(result);
                 ImportarEgressos.setTemInconsistencia(true);
             }
-
-            if (controlReg2 < 8) {
+            
+            System.out.println("Controle2 " + controlReg2);
+            
+            if (controlReg2 != 8) {
                 int result = 8 - controlReg1;
-
+                
                 if (result == 1) {
                     ImportarEgressos.setRelatorio("Erro: esta faltando um campo no registro do tipo Req.2.");
                 } else {
@@ -289,7 +297,7 @@ public class LerArquivo {
                 System.out.println(result);
                 ImportarEgressos.setTemInconsistencia(true);
             }
-
+            
             arq.close();
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());

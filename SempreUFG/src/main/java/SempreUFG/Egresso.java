@@ -186,13 +186,19 @@ public class Egresso {
         for (int i = 0; i < numDoc.length; i++) // verifica se o char não é um dígito
         {
             aux = String.valueOf(numDoc[i]);
-            if ((!Character.isDigit(numDoc[i])) && (!aux.equals("/"))) {
+            if ((!Character.isDigit(numDoc[i])) && (!aux.equals("/") && (!aux.equals("-")))) {
                 ImportarEgressos.setTemInconsistencia(true);
                 resultado = false;
-                ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/'.");
+                ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 possui campos que nao sao numerais ou que nao eh '/' ou '-'.");
                 resultado = false;
                 break;
             }
+        }
+
+        if (numDoc.length != 10) {
+            ImportarEgressos.setRelatorio("Erro: a data de nascimento do Egresso no registro Req.1 nao possui 10 caracteres.");
+            ImportarEgressos.setTemInconsistencia(true);
+            resultado = false;
         }
         return resultado;
     }

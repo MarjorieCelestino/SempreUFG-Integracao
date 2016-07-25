@@ -50,8 +50,8 @@ public class ProgramaAcademico {
         }
 
         for (int i = 0; i < tipoLista.size(); i++) {
-            if ((!"INICIACAO_CIENTIFICA".equals(this.tipoLista.get(i))) || (!"MONITORIA".equals(this.tipoLista.get(i)))
-                    || (!"EXTENSAO".equals(this.tipoLista.get(i))) || (!"INTERCAMBIO".equals(this.tipoLista.get(i)))) {
+            if ((!"INICIACAO_CIENTIFICA".equals(this.tipoLista.get(i))) && (!"MONITORIA".equals(this.tipoLista.get(i)))
+                    && (!"EXTENSAO".equals(this.tipoLista.get(i))) && (!"INTERCAMBIO".equals(this.tipoLista.get(i)))) {
                 ImportarEgressos.setRelatorio("Erro: o tipo de programa sobre o numero: " + (i + 1) + ", do Programa Academico no registro Req.2 se difere do esperado.");
                 ImportarEgressos.setTemInconsistencia(true);
                 testTipo = false;

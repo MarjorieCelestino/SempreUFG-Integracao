@@ -83,12 +83,16 @@ public class ProgramaAcademico {
     }
 
     //---------- GETs ----------
-    public String getData_incio() {
-        return data_incio;
+    public java.sql.Date getData_incio() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date data = new java.sql.Date(format.parse(data_incio).getTime());
+        return data;
     }
 
-    public String getData_fim() {
-        return data_fim;
+    public java.sql.Date getData_fim() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        java.sql.Date data = new java.sql.Date(format.parse(data_fim).getTime());
+        return data;
     }
 
     public String getDescricao() {

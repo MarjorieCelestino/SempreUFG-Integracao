@@ -1,5 +1,8 @@
 package SempreUFG;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Hiago
@@ -10,6 +13,9 @@ public class HistoricoNaUFG {
     private int mesAnoInicio, mesAnoFim, numeroMatriculaCurso;
     private String tituloTrabalhoFinal;
     private Egresso egresso;
+    private static Map<Integer, HistoricoNaUFG> mapa = new HashMap<Integer, HistoricoNaUFG>();
+    private int numHistoricoObject = 0;
+    private static int numEgresso;
 
     public HistoricoNaUFG(String idHistorico, String cursoUFG,
             int mesAnoInicio, int mesAnoFim, int numeroMatriculaCurso, String tituloTrabalhoFinal) {
@@ -22,6 +28,23 @@ public class HistoricoNaUFG {
         this.mesAnoFim = mesAnoFim;
         this.numeroMatriculaCurso = numeroMatriculaCurso;
         this.tituloTrabalhoFinal = tituloTrabalhoFinal;
+
+        setNumHistorico();
+
+        mapa.put(this.numHistoricoObject, this);    //Adicionando o objeto dentro da mapa;        
+    }
+
+    private void setNumHistorico() {
+        this.numHistoricoObject = HistoricoNaUFG.numEgresso;
+        HistoricoNaUFG.numEgresso = HistoricoNaUFG.numEgresso + 1;
+    }
+
+    public static HistoricoNaUFG getInstancia(int num) {
+        if (HistoricoNaUFG.mapa.get(num) != null) {
+            return HistoricoNaUFG.mapa.get(num);
+        } else {
+            return null;
+        }
     }
 
     public boolean validaHistoricoNaUFG() {

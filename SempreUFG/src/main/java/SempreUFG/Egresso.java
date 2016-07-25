@@ -19,7 +19,11 @@ public class Egresso {
     private String dataNascimento;
 
     public static Egresso getInstancia(int num) {
-        return Egresso.mapa.get(num);
+        if (Egresso.mapa.get(num) != null) {
+            return Egresso.mapa.get(num);
+        } else {
+            return null;
+        }
     }
 
     public void addTipoDocLista(String tipoDoc) {

@@ -109,13 +109,34 @@ public class ImportarEgressos {
                         }
                         //Se for um Reg 2
                     } else if (linha.startsWith("Reg2")) {
+                        String idEgresso = "";
+                        String curso = "";
+                        String id = "";
+                        
+                        if(idEgresso.length() > 0 && curso.length() > 0){
+                        PreparedStatement statemantFindHistorico = db.statemantFindHistorico(idEgresso, curso);
+                        statemantFindHistorico.executeUpdate();
+                        }else{
+                            //cancela transacao
+                            db.conn.rollback();
+                        }
+
+                        //Cria programa acadêmico
+                        ProgramaAcademico progAcad = null;
+
+                        if (progAcad != null) {
+                            PreparedStatement statementProgramaAcademico = db.statementProgramaAcademico(progAcad, id);
+                            statementProgramaAcademico.executeUpdate();
+                        }else{
+                            //cancela transacao
+                            db.conn.rollback();
+                        }
 
                     }
                     linha = lerArq.readLine();
                 }
                 db.conn.commit();
-            }
-            else{
+            } else {
                 //ADICIONAR ERRO DE Q O ARQUIVO ESTA VAZIO;
                 //----------------------------------------
             }

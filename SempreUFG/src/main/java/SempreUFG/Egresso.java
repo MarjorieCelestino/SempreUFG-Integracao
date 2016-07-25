@@ -147,7 +147,7 @@ public class Egresso {
     public java.sql.Date getDataNascimento() throws ParseException {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        java.sql.Date data = new java.sql.Date(format.parse(dataNascimento).getTime());
+        java.sql.Date data = new java.sql.Date(format.parse(dataNascimento).getDate());
 
         return data;
     }

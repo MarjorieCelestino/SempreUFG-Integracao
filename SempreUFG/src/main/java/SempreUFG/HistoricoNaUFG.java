@@ -12,22 +12,20 @@ public class HistoricoNaUFG {
     private String idHistorico, idEgresso, cursoUFG;
     private int mesAnoInicio, mesAnoFim, numeroMatriculaCurso;
     private String tituloTrabalhoFinal;
-    private Egresso egresso;
     private static Map<Integer, HistoricoNaUFG> mapa = new HashMap<Integer, HistoricoNaUFG>();
     private int numHistoricoObject = 0;
     private static int numEgresso;
 
-    public HistoricoNaUFG(String idHistorico, String cursoUFG,
+    public HistoricoNaUFG(String idEgresso, String cursoUFG,
             int mesAnoInicio, int mesAnoFim, int numeroMatriculaCurso, String tituloTrabalhoFinal) {
 
-        this.idHistorico = idHistorico;
-        egresso = Egresso.getInstancia(0);
-        this.idEgresso = egresso.getIdEgresso();
+        this.idEgresso = idEgresso;
         this.cursoUFG = cursoUFG;
         this.mesAnoInicio = mesAnoInicio;
         this.mesAnoFim = mesAnoFim;
         this.numeroMatriculaCurso = numeroMatriculaCurso;
         this.tituloTrabalhoFinal = tituloTrabalhoFinal;
+        this.idHistorico = this.idEgresso + this.cursoUFG;
 
         setNumHistorico();
 

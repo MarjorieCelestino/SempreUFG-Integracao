@@ -1,6 +1,7 @@
 package PersistenciaSempreUFG;
 
 import SempreUFG.Egresso;
+import SempreUFG.HistoricoNaUFG;
 import SempreUFG.ImportarEgressos;
 import SempreUFG.ProgramaAcademico;
 import SempreUFG.Reg1;
@@ -14,7 +15,7 @@ import java.util.Scanner;
  * @author Hiago
  */
 public class LerArquivo {
-    
+
     private static Scanner leitor;
     private static int quantEgresso = 0;
 
@@ -28,15 +29,16 @@ public class LerArquivo {
 //            FileReader arq = new FileReader("C:\\Users\\Juliano\\IntegrAplic\\Egressos-para-Importar.txt"));
 
             BufferedReader lerArq = new BufferedReader(arq);
-            
+
             String linha = lerArq.readLine();
-            
+
             char[] numDoc = linha.toCharArray();
             String ident = "";
             int controlReg1 = 1; //Verifica qual campo do Egresso será salvo
             int controlReg2 = 1; //Verifica qual campo do Egresso será salvo
             String aux; // Converte o char[i] em uma String para ser analisada no if
             Egresso egresso;
+            HistoricoNaUFG historicoUfg;
             ProgramaAcademico progAcad;
             int reg1 = 0;
 
@@ -50,7 +52,7 @@ public class LerArquivo {
                 ident = "";
                 numDoc = linha.toCharArray();
                 System.out.printf("Conteudo da linha: " + "%s\n", linha);
-                
+
                 if (linha != null && !"".equals(linha)) {
                     //variavel ident recebe o identificador da linha, podendo este ser Reg.1 ou Reg.2
                     for (int i = 0; i < 5; i++) {
@@ -67,16 +69,19 @@ public class LerArquivo {
                 //e todos os campos de Histórico na UFG. 
                 if (ident.equals("Reg.1")) {
                     quantEgresso = quantEgresso + 1;
-                    
+
                     if (quantEgresso > 1) {
                         ImportarEgressos.setRelatorio("Erro: foi constatado a existencia de mais de um registro do tipo Req.1.");
                         ImportarEgressos.setTemInconsistencia(true);
                     }
-                    
+
                     System.out.println("Identificador da linha: " + ident);
                     String nome = "", tipoDocumento = "", numeroDocumento = "", dataNascimento = "";
+                    String curso = "", idHistorico = "", cursoUFG = "";
+                    String mesAnoInicio = "", mesAnoFim = "", numeroMatriculaCurso = "";
+                    String tituloTrabalhoFinal = "";
                     boolean passou = false;
-                    
+
                     for (int i = 5; i < numDoc.length; i++) {
                         aux = String.valueOf(numDoc[i]);
 
@@ -120,6 +125,56 @@ public class LerArquivo {
                                     dataNascimento = dataNascimento + aux;
                                 }
                                 break;
+
+                            case 5:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    curso = curso + aux;
+                                }
+                                break;
+                            case 6:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    idHistorico = idHistorico + aux;
+                                }
+                                break;
+                            case 7:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    cursoUFG = cursoUFG + aux;
+                                }
+                                break;
+                            case 8:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    mesAnoInicio = mesAnoInicio + aux;
+                                }
+                                break;
+                            case 9:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    mesAnoFim = mesAnoFim + aux;
+                                }
+                                break;
+                            case 10:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    numeroMatriculaCurso = numeroMatriculaCurso + aux;
+                                }
+                                break;
+                            case 11:
+                                if (aux.equals("\\")) {
+                                    controlReg1 = controlReg1 + 1;
+                                } else {
+                                    tituloTrabalhoFinal = tituloTrabalhoFinal + aux;
+                                }
+                                break;
                             default:
                                 if (!passou) {
                                     passou = true;
@@ -129,17 +184,37 @@ public class LerArquivo {
                                 break;
                         }
                     }
-                    
+
                     egresso = new Egresso(nome, tipoDocumento, numeroDocumento, dataNascimento);
 
                     //Chama o metodo responsavel por validar as informacoes do egresso
                     boolean reg1OK = egresso.validaEgresso();
+                    boolean testaCurso = true;
+
+                    if (curso == null) {
+                        testaCurso = false;
+                        ImportarEgressos.setRelatorio("Erro: o identificador do curso da UfG cursado pelo egresso no registro Req.1 esta nulo.");
+                        ImportarEgressos.setTemInconsistencia(true);
+                    }
+                    if (curso.length() > 50) {
+                        testaCurso = false;
+                        ImportarEgressos.setRelatorio("Erro: o identificador do curso da UfG cursado pelo egresso no registro Req.1 esta com mais de 50 caracteres.");
+                        ImportarEgressos.setTemInconsistencia(true);
+                    }
+
+                    int inicio, fim, matriculaCurso;
+
+                    inicio = Integer.parseInt(mesAnoInicio);
+                    fim = Integer.parseInt(mesAnoFim);
+                    matriculaCurso = Integer.parseInt(numeroMatriculaCurso);
+
+                    historicoUfg = new HistoricoNaUFG(idHistorico, cursoUFG, inicio, fim, matriculaCurso, tituloTrabalhoFinal);
+
+                    boolean historicoOK = historicoUfg.validaHistoricoNaUFG();
 
                     //public Reg1(Egresso egresso, String curso, HistoricoNaUFG historico) {
-                    if (reg1OK) {
-//                        Reg1 reg1 = new Reg1(egresso,):
-                    } else {
-                        System.exit(0);
+                    if (reg1OK && testaCurso && historicoOK) {
+                        Reg1 regra = new Reg1(egresso, curso, historicoUfg);
                     }
 
                     //Registro tipo 2: Valor fixo “Reg.2”, o segundo e terceiro 
@@ -147,15 +222,15 @@ public class LerArquivo {
                     //cursado pelo egresso, e todos os campos de Realização de 
                     //Programa Acadêmico do egresso nesse curso.
                 } else if (ident.equals("Reg.2")) {
-                    
+
                     System.out.println("Identificador da linha: " + ident);
-                    
+
                     String tipoDocEgresso = "", numDocEgresso = "";
                     String identificadorCurso = "";
                     String idHistorico = "", tipoEnum = "", dataInicio = "", dataFim = "", descricao = "";
-                    
+
                     boolean passou = false;
-                    
+
                     for (int i = 5; i < numDoc.length; i++) {
                         aux = String.valueOf(numDoc[i]);
 
@@ -189,7 +264,7 @@ public class LerArquivo {
                                 if (aux.equals("\\")) {
                                     controlReg2 = controlReg2 + 1;
                                 } else {
-                                    
+
                                     identificadorCurso = identificadorCurso + aux;
                                 }
                                 break;
@@ -247,35 +322,34 @@ public class LerArquivo {
 
                     //Case 3:
                     if (identificadorCurso == null) {
-                        ImportarEgressos.setRelatorio("Erro: o identificador do cursoda UfG cursado pelo egresso no registro Req.2 esta nulo.");
+                        ImportarEgressos.setRelatorio("Erro: o identificador do curso da UfG cursado pelo egresso no registro Req.2 esta nulo.");
                         ImportarEgressos.setTemInconsistencia(true);
                     }
                     if (identificadorCurso.length() > 50) {
-                        ImportarEgressos.setRelatorio("Erro: o identificador do cursoda UfG cursado pelo egresso no registro Req.2 esta com mais de 600 caracteres.");
+                        ImportarEgressos.setRelatorio("Erro: o identificador do curso da UfG cursado pelo egresso no registro Req.2 esta com mais de 50 caracteres.");
                         ImportarEgressos.setTemInconsistencia(true);
                     }
 
                     //Case 4, 5, 6, 7 e 8:
                     progAcad = new ProgramaAcademico(idHistorico, tipoEnum, dataInicio, dataFim, descricao);
                     boolean ok = progAcad.validaProgramaAcademico();
-                    
+
                 } else {
                     ImportarEgressos.setTemInconsistencia(true);
                     ImportarEgressos.setRelatorio("Erro: identificador invalido. Identificador encontrado: " + ident + ".");
                 }
-                
+
                 linha = lerArq.readLine();
             }
-            
+
             if (quantEgresso == 0) {
                 ImportarEgressos.setRelatorio("Erro: nao foi constatado nenhum registro do tipo Req.1.");
                 ImportarEgressos.setTemInconsistencia(true);
             }
-            
-            System.out.println("Controle1 " + reg1);
-            if (reg1 != 4) {
-                int result = 4 - reg1;
-                
+
+            if (reg1 != 11) {
+                int result = 11 - reg1;
+
                 if (result == 1) {
                     ImportarEgressos.setRelatorio("Erro: esta faltando um campo no registro do tipo Req.1.");
                 } else {
@@ -283,12 +357,10 @@ public class LerArquivo {
                 }
                 ImportarEgressos.setTemInconsistencia(true);
             }
-            
-            System.out.println("Controle2 " + controlReg2);
-            
+
             if (controlReg2 != 8) {
                 int result = 8 - controlReg1;
-                
+
                 if (result == 1) {
                     ImportarEgressos.setRelatorio("Erro: esta faltando um campo no registro do tipo Req.2.");
                 } else {
@@ -297,7 +369,7 @@ public class LerArquivo {
                 System.out.println(result);
                 ImportarEgressos.setTemInconsistencia(true);
             }
-            
+
             arq.close();
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());

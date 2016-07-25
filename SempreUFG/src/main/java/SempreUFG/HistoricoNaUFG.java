@@ -15,6 +15,7 @@ public class HistoricoNaUFG {
             int mesAnoInicio, int mesAnoFim, int numeroMatriculaCurso, String tituloTrabalhoFinal) {
 
         this.idHistorico = idHistorico;
+        egresso = Egresso.getInstancia(0);
         this.idEgresso = egresso.getIdEgresso();
         this.cursoUFG = cursoUFG;
         this.mesAnoInicio = mesAnoInicio;
@@ -28,14 +29,72 @@ public class HistoricoNaUFG {
                 testNumeroMatricula, testTituloTrabalho;
 
         testIdEgresso = (this.idEgresso != null) && (this.idEgresso.length() <= 100) && testString(this.idEgresso);
+
+        if (!testIdEgresso) {
+            ImportarEgressos.setTemInconsistencia(true);
+            if (this.idEgresso == null) {
+                ImportarEgressos.setRelatorio("Erro: o id do Egresso do Historico na UFG no registro Req.1 esta nulo.");
+            }
+            if (this.idEgresso.length() > 100) {
+                ImportarEgressos.setRelatorio("Erro: o id do Egresso do Historico na UFG no registro Req.1 esta com mais de 100 caracteres.");
+            }
+            if (!testString(this.idEgresso)) {
+                ImportarEgressos.setRelatorio("Erro: o id do Egresso do Historico na UFG no registro Req.1 possui campos que nao sao validos.");
+            }
+        }
+
         testCursoUfg = (this.cursoUFG != null) && (this.cursoUFG.length() <= 500) && testString(this.cursoUFG);
+
+        if (!testCursoUfg) {
+            ImportarEgressos.setTemInconsistencia(true);
+            if (this.cursoUFG == null) {
+                ImportarEgressos.setRelatorio("Erro: o curso do Egresso do Historico na UFG no registro Req.1 esta nulo.");
+            }
+            if (this.cursoUFG.length() > 500) {
+                ImportarEgressos.setRelatorio("Erro: o curso do Egresso do Historico na UFG no registro Req.1 esta com mais de 100 caracteres.");
+            }
+            if (!testString(this.cursoUFG)) {
+                ImportarEgressos.setRelatorio("Erro: o curso do Egresso do Historico na UFG no registro Req.1 possui campos que nao sao numerais.");
+            }
+        }
+
         testInicio = (this.mesAnoInicio > 0);
+
+        if (!testInicio) {
+            ImportarEgressos.setTemInconsistencia(true);
+            ImportarEgressos.setRelatorio("Erro: a data de inicio do Egresso no Historico na UFG esta invalida.");
+        }
+
         testFim = (this.mesAnoFim > 0);
+
+        if (!testFim) {
+            ImportarEgressos.setTemInconsistencia(true);
+            ImportarEgressos.setRelatorio("Erro: a data de fim do Egresso no Historico na UFG esta invalida.");
+        }
+
         testNumeroMatricula = (this.numeroMatriculaCurso > 0);
+
+        if (!testNumeroMatricula) {
+            ImportarEgressos.setTemInconsistencia(true);
+            ImportarEgressos.setRelatorio("Erro: a matricula do Egresso no Historico na UFG possui um valor negativo.");
+        }
+
         testTituloTrabalho = (this.tituloTrabalhoFinal != null) && (this.tituloTrabalhoFinal.length() <= 500) && testString(this.tituloTrabalhoFinal);
 
-        return (testIdEgresso && testCursoUfg && testInicio && testFim && testNumeroMatricula && testTituloTrabalho);
+        if (!testTituloTrabalho) {
+            ImportarEgressos.setTemInconsistencia(true);
+            if (this.tituloTrabalhoFinal == null) {
+                ImportarEgressos.setRelatorio("Erro: o titulo do trabalho final do Egresso do Historico na UFG no registro Req.1 esta nulo.");
+            }
+            if (this.tituloTrabalhoFinal.length() > 500) {
+                ImportarEgressos.setRelatorio("Erro: o titulo do trabalho final do Egresso do Historico na UFG no registro Req.1 esta com mais de 500 caracteres.");
+            }
+            if (!testString(this.tituloTrabalhoFinal)) {
+                ImportarEgressos.setRelatorio("Erro: o titulo do trabalho final do Egresso do Historico na UFG no registro Req.1 possui campos que nao sao numerais.");
+            }
+        }
 
+        return (testIdEgresso && testCursoUfg && testInicio && testFim && testNumeroMatricula && testTituloTrabalho);
     }
 
     private boolean testString(String doc) {

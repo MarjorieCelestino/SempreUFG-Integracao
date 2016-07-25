@@ -48,6 +48,8 @@ public class Egresso {
 
         listaObjt = listaTotal;
         setNumEgresso();     //Atribuindo o identificador unico
+
+        this.idEgresso = Integer.toString(numEgressoObject);
         mapa.put(Egresso.numEgressoObject, this);    //Adicionando o objeto dentro da mapa;
         listaTotal++;
     }

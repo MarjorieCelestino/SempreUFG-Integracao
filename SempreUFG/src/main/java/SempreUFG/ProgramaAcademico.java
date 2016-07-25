@@ -21,10 +21,25 @@ public class ProgramaAcademico {
         boolean testDescricao, testInicio, testFim, testHistorico, testTipo;
 
         testDescricao = (this.descricao != null) && (this.descricao.length() <= 100);
+        if (!testDescricao) {
+            ImportarEgressos.setRelatorio("Erro: A descricao do Programa Academico está vazia ou maior que o tamanho permitido.");
+        }
         testInicio = (this.data_incio != null) && (this.data_incio.length() == 10);
+        if (!testInicio) {
+            ImportarEgressos.setRelatorio("Erro: A data de inicio do Programa Academico está vazia ou no formato errado.");
+        }
         testFim = (this.data_fim != null) && (this.data_fim.length() == 10);
+        if (!testFim) {
+            ImportarEgressos.setRelatorio("Erro: A data final do Programa Academico está vazia ou no formato errado.");
+        }
         testHistorico = (this.idHistorico != null);
-        testTipo = (this.tipo != null) && (this.tipo.length() <= 50);
+        if (!testHistorico) {
+            ImportarEgressos.setRelatorio("Erro: O identificador do Histórico do aluno está vazio.");
+        }
+        testTipo = (this.tipo != null) && (this.data_fim.length() <= 50);
+        if (!testTipo) {
+            ImportarEgressos.setRelatorio("Erro: O tipo de Programa Academico nao foi definido ou esta fora do tamanho permitido.");
+        }
 
         return (testDescricao && testInicio && testFim && testHistorico && testTipo);
     }

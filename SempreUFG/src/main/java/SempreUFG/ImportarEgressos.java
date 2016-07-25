@@ -4,16 +4,13 @@ import BancoDados.DataBaseDealer;
 import PersistenciaSempreUFG.LerArquivo;
 import PersistenciaSempreUFG.GravarRelatoImportacao;
 import java.io.IOException;
-import java.sql.PreparedStatement;
+import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
+import sun.applet.Main;
 
-/**
- * Hello world!
- *
- */
+
 public class ImportarEgressos {
 
     public static void setRelatorio(String relatorio) {
@@ -30,8 +27,8 @@ public class ImportarEgressos {
         ImportarEgressos.temInconsistencia = temInconsistencia;
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
-
+    public static void main(String[] args) throws IOException, ParseException, SQLException {
+        
         GravarRelatoImportacao.criarArquivo();
         GravarRelatoImportacao.addRelato("Relatorio de Importacao: ");
         LerArquivo.lerDados();
@@ -43,12 +40,11 @@ public class ImportarEgressos {
         }
         GravarRelatoImportacao.fecharArquivo();
         LerArquivo.fecharArquivo();
-
-        /* 
-        //A partir daqui sera realizada a persistencia dos dados no BD
+        /*
         DataBaseDealer db = DataBaseDealer.getInstance();
         try {
             db.conn.setAutoCommit(false);
+            db.conn.setTransactionIsolation(TRANSACTION_READ_UNCOMMITTED);
 
             //Enquanto le no arquivoo
 //            while (true) {
@@ -93,14 +89,15 @@ public class ImportarEgressos {
 
             }
 
-            db.conn.commit();
+           db.conn.commit();
         } catch (SQLException ex) {
-            Logger.getLogger(ImportarEgressos.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
             try {
                 db.conn.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ImportarEgressos.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

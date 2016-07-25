@@ -5,13 +5,9 @@ import SempreUFG.HistoricoNaUFG;
 import SempreUFG.ImportarEgressos;
 import SempreUFG.ProgramaAcademico;
 import SempreUFG.Reg1;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import SempreUFG.Reg2;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -80,6 +76,53 @@ public class LerArquivo {
         Reg1 reg = new Reg1 (egr, curso, his);
         
         return reg;
+    }
+    
+    public static Reg2 lerReg2 (String linha){
+        
+        int cursor = linha.indexOf("\\");
+        linha = linha.substring(cursor + 1);
+        
+        //Egresso: tipo de documento
+        cursor = linha.indexOf("\\");
+        String tipoDoc = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        //Egresso: numero do documento
+        cursor = linha.indexOf("\\");
+        String numDoc = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        //Curso
+        cursor = linha.indexOf("\\");
+        String curso = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        //Progrma Academico: tipo
+        cursor = linha.indexOf("\\");
+        String tipo = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        //Progrma Academico: data inicio
+        cursor = linha.indexOf("\\");
+        String dataInicio = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        //Progrma Academico: data Fim
+        cursor = linha.indexOf("\\");
+        String dataFim = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        //Progrma Academico: descricao
+        cursor = linha.indexOf("\\");
+        String descricao = linha.substring(0, cursor - 1);
+        linha = linha.substring(cursor + 1);
+        
+        String idHistorico = tipoDoc + numDoc + curso;
+        ProgramaAcademico progAcad = new ProgramaAcademico(idHistorico, tipo, dataInicio, dataFim, descricao);
+        Reg2 reg2 = new Reg2(tipoDoc + numDoc, curso, progAcad);
+        
+        return reg2;
     }
 
     public static void lerDados(String linha) throws IOException {

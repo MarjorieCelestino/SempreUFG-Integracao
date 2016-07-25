@@ -5,10 +5,6 @@
  */
 package BancoDados;
 
-/**
- *
- * @author Hiago
- */
 import SempreUFG.Egresso;
 import SempreUFG.HistoricoNaUFG;
 import java.sql.*;
@@ -90,5 +86,4 @@ public class DataBaseDealer {
 
         return inserirHistorico;
     }
-
 }

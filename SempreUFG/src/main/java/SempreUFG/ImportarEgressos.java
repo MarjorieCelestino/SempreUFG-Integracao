@@ -35,16 +35,16 @@ public class ImportarEgressos {
         GravarRelatoImportacao.criarArquivo();
         GravarRelatoImportacao.addRelato("Relatorio de Importacao: ");
         LerArquivo.lerDados();
-        GravarRelatoImportacao.fecharArquivo();
-        LerArquivo.fecharArquivo();
-
         if (ImportarEgressos.temInconsistencia) {
             GravarRelatoImportacao.addRelato("Foram constatadas inconsistencias. Devido a estas inconsistencias, o Bando de Dados nao sera alterado.");
             System.exit(0);
         } else {
             GravarRelatoImportacao.addRelato("Nao foram encontradas inconsistencias. As alteracoes serao salvas no Banco de Dados.");
         }
+        GravarRelatoImportacao.fecharArquivo();
+        LerArquivo.fecharArquivo();
 
+        /* 
         //A partir daqui sera realizada a persistencia dos dados no BD
         DataBaseDealer db = DataBaseDealer.getInstance();
         try {
@@ -104,5 +104,6 @@ public class ImportarEgressos {
             }
         }
 
+         */
     }
 }

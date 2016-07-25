@@ -48,8 +48,9 @@ public class ImportarEgressos {
 
             //Enquanto le no arquivoo
 //            while (true) {
+              String linha = "";
             //Se for um reg1
-            if (true) {
+            if (linha.startsWith("Reg1")) {
                 //Cria o Egresso
                 Egresso egr;
                 //Existe um egresso por arquivo
@@ -85,7 +86,7 @@ public class ImportarEgressos {
 //                        break;
                 }
                 //Se for um Reg 2
-            } else if (true) {
+            } else if (linha.startsWith("Reg2")) {
 
             }
 

@@ -15,7 +15,10 @@ public class CursoUFG {
     public boolean validaCurso() {
         boolean testNome;
 
-        testNome = (this.nome != null) && (this.nome.length() <= 50);
+         testNome = (this.nome != null) && (this.nome.length() <= 50);
+        if(!testNome){
+           ImportarEgressos.setRelatorio("Erro: Nome do Curso vaizo ou fora do tamanho permitido.");
+        }
 
         return testNome;
     }

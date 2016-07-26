@@ -100,14 +100,14 @@ public class DataBaseDealer {
         return buscaIdHistorico;
     }
 
-    public PreparedStatement statementProgramaAcademico(ProgramaAcademico progAcad, String id) throws ParseException {
+    public PreparedStatement statementProgramaAcademico(ProgramaAcademico progAcad) throws ParseException {
         String sqlInsereProgramaAcademico = "INSERT INTO REALIZACAO_DE_PROGRAMA_ACADEMICO (ID_HISTORICO, TIPO, DATA_INICIO, DATA_FIM, DESCRICAO)"
                 + "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement InsereProgrmaAcademico = null;
 
         try {
             InsereProgrmaAcademico = conn.prepareStatement(sqlInsereProgramaAcademico);
-            InsereProgrmaAcademico.setString(1, id);
+            InsereProgrmaAcademico.setString(1, progAcad.getIdHistorico());
             InsereProgrmaAcademico.setString(2, progAcad.getTipo());
             InsereProgrmaAcademico.setDate(3, progAcad.getData_incio());
             InsereProgrmaAcademico.setDate(4, progAcad.getData_fim());

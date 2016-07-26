@@ -10,8 +10,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import static java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+
 public class ImportarEgressos {
 
     public static void setRelatorio(String relatorio) {
@@ -87,9 +89,8 @@ public class ImportarEgressos {
                             ImportarEgressos.setTemInconsistencia(true);
                             break;
                         }
-                        
+
                         //Histórico
-                        
                         //Testa se o histÃ³rico Ã© valido
                         if (reg1.getHistorico() != null) {
                             PreparedStatement statmentHistorico = db.statmentHistorico(reg1.getHistorico());
@@ -108,27 +109,28 @@ public class ImportarEgressos {
                         }
                         //Se for um Reg 2
                     } else if (linha.startsWith("Reg2")) {
-                        String idEgresso = "";
-                        String curso = "";
-                        String id = "";
-                        
-                        if(idEgresso.length() > 0 && curso.length() > 0){
-                        PreparedStatement statemantFindHistorico = db.statemantFindHistorico(idEgresso, curso);
-                        statemantFindHistorico.executeUpdate();
-                        }else{
-                            //cancela transacao
-                            db.conn.rollback();
+                        //Cria Reg2
+                        Reg2 reg2 = LerArquivo.lerReg2(linha);
+
+                        PreparedStatement statemantFindHistorico = db.statemantFindHistorico(reg2.getIdEgresso(), reg2.getCurso());
+                        ResultSet rs = statemantFindHistorico.executeQuery();
+
+                        if (rs != null) {
+                            if (reg2.getProgAcad() != null) {
+                                PreparedStatement statementProgramaAcademico = db.statementProgramaAcademico(reg2.getProgAcad());
+                                statementProgramaAcademico.executeUpdate();
+                            } else {
+                                db.conn.rollback();
+                                ImportarEgressos.setTemInconsistencia(true);
+                                break;
+                            }
                         }
-
-                        //Cria programa acadêmico
-                        ProgramaAcademico progAcad = null;
-
-                        if (progAcad != null) {
-                            PreparedStatement statementProgramaAcademico = db.statementProgramaAcademico(progAcad, id);
-                            statementProgramaAcademico.executeUpdate();
-                        }else{
-                            //cancela transacao
+                        else{
                             db.conn.rollback();
+                            ImportarEgressos.setRelatorio("Erro: Não existe um histórico com o Egresso (id = "
+                            + reg2.getIdEgresso() + ") e curso = " + reg2.getCurso());
+                            ImportarEgressos.setTemInconsistencia(true);
+                            break;
                         }
 
                     }
@@ -140,7 +142,7 @@ public class ImportarEgressos {
                 ImportarEgressos.setTemInconsistencia(true);
             }
         } catch (SQLException ex) {
-            
+
         } finally {
             db.conn.close();
         }

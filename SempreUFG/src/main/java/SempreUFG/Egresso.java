@@ -1,5 +1,6 @@
 package SempreUFG;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,7 +59,7 @@ public class Egresso {
         listaTotal++;
     }
 
-    public boolean validaListas() {
+    public boolean validaListas() throws IOException {
         boolean testTipoDocLista = true, testNumDocLista = true;
 
         for (int i = 0; i < tipoDocLista.size(); i++) {
@@ -90,7 +91,7 @@ public class Egresso {
         return testTipoDocLista && testNumDocLista;
     }
 
-    public boolean validaEgresso() {
+    public boolean validaEgresso() throws IOException {
         boolean testNome, testTipoDoc, testNumDoc, testNumNascimento;
 
         testNome = (this.nome != null) && (this.nome.length() <= 100);
@@ -169,7 +170,7 @@ public class Egresso {
         Egresso.numEgresso = Egresso.numEgresso + 1;
     }
 
-    private boolean testNumeroDoc() {
+    private boolean testNumeroDoc() throws IOException {
         char[] numDoc = this.numeroDocumento.toCharArray();
         boolean resultado = true;
 
@@ -185,7 +186,7 @@ public class Egresso {
         return resultado;
     }
 
-    private boolean testNumeroNascimento() {
+    private boolean testNumeroNascimento() throws IOException {
         char[] numDoc = this.dataNascimento.toCharArray();
         boolean resultado = true;
         String aux;

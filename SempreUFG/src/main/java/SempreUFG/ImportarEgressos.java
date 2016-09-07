@@ -30,121 +30,78 @@ public class ImportarEgressos {
         ImportarEgressos.temInconsistencia = temInconsistencia;
     }
 
-    public static void main(String[] args) throws IOException, ParseException, SQLException {
+    public static void main(String[] args) throws IOException, ParseException {
 
         GravarRelatoImportacao.criarArquivo();
         GravarRelatoImportacao.addRelato("Relatorio de Importacao: ");
-//        LerArquivo.lerDados();
+        LerArquivo.lerDados();
+        GravarRelatoImportacao.fecharArquivo();
+        LerArquivo.fecharArquivo();
+
         if (ImportarEgressos.temInconsistencia) {
             GravarRelatoImportacao.addRelato("Foram constatadas inconsistencias. Devido a estas inconsistencias, o Bando de Dados nao sera alterado.");
             System.exit(0);
         } else {
             GravarRelatoImportacao.addRelato("Nao foram encontradas inconsistencias. As alteracoes serao salvas no Banco de Dados.");
         }
-        GravarRelatoImportacao.fecharArquivo();
-        LerArquivo.fecharArquivo();
 
+        //A partir daqui sera realizada a persistencia dos dados no BD
         DataBaseDealer db = DataBaseDealer.getInstance();
         try {
             db.conn.setAutoCommit(false);
-            db.conn.setTransactionIsolation(TRANSACTION_READ_UNCOMMITTED);
 
-            FileReader arq;
-            BufferedReader lerArq = null;
-            try {
-                if (args[0] != null) {
-                    if (args[0].startsWith(".\\")) {
-                        args[0].replaceFirst(".", new File("").getAbsolutePath());
-                    }
-                    arq = new FileReader(args[0] + "\\Egressos-para-Importar.txt");
+            //Enquanto le no arquivoo
+//            while (true) {
+            //Se for um reg1
+            if (true) {
+                //Cria o Egresso
+                Egresso egr;
+                //Existe um egresso por arquivo
+                //O egresso sempre estara na posicao 0 do HashMap
+                //metodo ".getInstancia(n)" retorna um egresso, no caso o unico egresso a ser retornado 
+                egr = Egresso.getInstancia(0);
+                //Testa se o Egresso Ã© valido
+                if (egr != null) {
+                    PreparedStatement statmentEgresso = db.statmentEgresso(egr);
+                    statmentEgresso.executeUpdate();
                 } else {
-                    arq = new FileReader("Egressos-para-Importar.txt");
+                    //Cancela a transaÃ§Ã£o
+                    db.conn.rollback();
+                    //Adiciona no relatÃ³rio de erro
+
+                    //Encerra o ciclo
+//                        break;
                 }
-                lerArq = new BufferedReader(arq);
-            } catch (FileNotFoundException e) {
-                ImportarEgressos.setRelatorio("Erro: O registro não foi encontrado.");
-                ImportarEgressos.setTemInconsistencia(true);
+
+                //Cria o HistÃ³rico
+                HistoricoNaUFG his;
+                his = HistoricoNaUFG.getInstancia(0);
+                //Testa se o histÃ³rico Ã© valido
+                if (his != null) {
+                    PreparedStatement statmentHistorico = db.statmentHistorico(his);
+                    statmentHistorico.executeUpdate();
+                } else {
+                    //Cancela a transaÃ§Ã£o
+                    db.conn.rollback();
+                    //Adiciona no relatÃ³rio de erro
+
+                    //Encerra o ciclo
+//                        break;
+                }
+                //Se for um Reg 2
+            } else if (true) {
+
             }
 
-            String linha = lerArq.readLine();
-            if (linha != null && !linha.isEmpty()) {
-                //Enquanto le no arquivoo
-                while (linha != null) {
-                    //Se for um reg1
-                    if (linha.startsWith("Reg1")) {
-                        //Cria o Reg1
-                        Reg1 reg1 = LerArquivo.lerReg1(linha);
-
-                        //Testa se o Egresso Ã© valido
-                        if (reg1.getEgresso() != null) {
-                            PreparedStatement statmentEgresso = db.statmentEgresso(reg1.getEgresso());
-                            statmentEgresso.executeUpdate();
-                        } else {
-                            db.conn.rollback();
-                            ImportarEgressos.setRelatorio("Erro: O Egresso (nome = +" + reg1.getEgresso().getNome()
-                                    + ", tipo de documento = " + reg1.getEgresso().getTipoDocumento()
-                                    + ", numero de documento = " + reg1.getEgresso().getNumeroDocumento()
-                                    + ", data de nascimento = " + reg1.getEgresso().getDataNascimento().getDate()
-                                    + ") já existe no Banco de Dados ou já foi adicionado em uma linha anterior.");
-                            ImportarEgressos.setTemInconsistencia(true);
-                            break;
-                        }
-
-                        //Histórico
-                        //Testa se o histÃ³rico Ã© valido
-                        if (reg1.getHistorico() != null) {
-                            PreparedStatement statmentHistorico = db.statmentHistorico(reg1.getHistorico());
-                            statmentHistorico.executeUpdate();
-                        } else {
-                            db.conn.rollback();
-                            ImportarEgressos.setRelatorio("Erro: O Histórico na UFG (egresso = +" + reg1.getHistorico().getIdEgresso()
-                                    + ", curso = " + reg1.getHistorico().getCursoUFG()
-                                    + ", mes e ano de inicio = " + reg1.getHistorico().getMesAnoInicio()
-                                    + ", mes e ano de fim = " + reg1.getHistorico().getMesAnoFim()
-                                    + ", matricula = " + reg1.getHistorico().getNumeroMatriculaCurso()
-                                    + ", titulo do trabalho final = " + reg1.getHistorico().getMesAnoFim()
-                                    + ") já existe no Banco de Dados ou já foi adicionado em uma linha anterior.");
-                            ImportarEgressos.setTemInconsistencia(true);
-                            break;
-                        }
-                        //Se for um Reg 2
-                    } else if (linha.startsWith("Reg2")) {
-                        //Cria Reg2
-                        Reg2 reg2 = LerArquivo.lerReg2(linha);
-
-                        PreparedStatement statemantFindHistorico = db.statemantFindHistorico(reg2.getIdEgresso(), reg2.getCurso());
-                        ResultSet rs = statemantFindHistorico.executeQuery();
-
-                        if (rs != null) {
-                            if (reg2.getProgAcad() != null) {
-                                PreparedStatement statementProgramaAcademico = db.statementProgramaAcademico(reg2.getProgAcad());
-                                statementProgramaAcademico.executeUpdate();
-                            } else {
-                                db.conn.rollback();
-                                ImportarEgressos.setTemInconsistencia(true);
-                                break;
-                            }
-                        }
-                        else{
-                            db.conn.rollback();
-                            ImportarEgressos.setRelatorio("Erro: Não existe um histórico com o Egresso (id = "
-                            + reg2.getIdEgresso() + ") e curso = " + reg2.getCurso());
-                            ImportarEgressos.setTemInconsistencia(true);
-                            break;
-                        }
-
-                    }
-                    linha = lerArq.readLine();
-                }
-                db.conn.commit();
-            } else {
-                ImportarEgressos.setRelatorio("Erro: o registro começa com uma linha em branco ou está vazio.");
-                ImportarEgressos.setTemInconsistencia(true);
-            }
+            db.conn.commit();
         } catch (SQLException ex) {
-
+            Logger.getLogger(ImportarEgressos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            db.conn.close();
+            try {
+                db.conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ImportarEgressos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
